@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>初学dos | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="说是Dos，其实就是win7下的命令行，这个应该不叫Dos吧！但是叫它 cmd 又感觉很奇怪，还是暂时叫Dos吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初学dos">
+<meta property="og:url" content="http://gxl666.github.io/2016/09/03/初学Dos/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="说是Dos，其实就是win7下的命令行，这个应该不叫Dos吧！但是叫它 cmd 又感觉很奇怪，还是暂时叫Dos吧。">
+<meta property="og:updated_time" content="2016-09-03T10:38:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初学dos">
+<meta name="twitter:description" content="说是Dos，其实就是win7下的命令行，这个应该不叫Dos吧！但是叫它 cmd 又感觉很奇怪，还是暂时叫Dos吧。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-初学Dos" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/03/初学Dos/" class="article-date">
+  <time datetime="2016-09-03T08:09:30.000Z" itemprop="datePublished">2016-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Dos/">Dos</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      初学dos
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>说是Dos，其实就是win7下的命令行，这个应该不叫Dos吧！但是叫它 cmd 又感觉很奇怪，还是暂时叫Dos吧。<br><a id="more"></a><br>这次之所以要学习Dos，是因为想自己写一个脚本从某些图片网站拉取图片作为自己的电脑桌面壁纸，不至于整天对着一张图片审美疲劳。虽然电脑上也有 360桌面 这种可以定时更换桌面壁纸的软件，但是感觉里面的图片好低俗、好无聊，开机一直运行着还嫌它占内存。所以想自己用脚本写一个，更换完壁纸就自动退出。<br>首先，找到了 cmd 中自带的帮助文档：<br><figure class="highlight dos"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">help</span> &gt; bat.txt</div></pre></td></tr></table></figure></p>
+<p><a href="../../../../dos/bat.txt">bat.txt</a><br>这个帮助文档太简洁了，然后又着了篇教程：<a href="http://www.cnblogs.com/glaivelee/archive/2009/10/07/1578737.html" target="_blank" rel="external">教程</a>。虽然作者从别处复制粘贴的很烂，但是看起来还是浅显易懂的，看了 5 个小时，总算大致看完了。后来发现 cmd 下也可以看到每条命令的详细用法：<br><figure class="highlight dos"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">help</span> <span class="built_in">copy</span></div><div class="line"><span class="built_in">copy</span> /?</div></pre></td></tr></table></figure></p>
+<p>不过 cmd 貌似只有 ftp 下载功能，而自己又不会用，于是去下载了一个 wget 工具。<br>然后看了下网上的教程，试了很多，win7 64位 家庭普通版 都不能实现批处理脚本中更换桌面壁纸。以后有时间了再折腾吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/09/03/初学Dos/" data-id="cizru1zoq00b068twwzd6xuu2" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dos/">Dos</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/08/九月份新的学习计划/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          九月份新的学习计划
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/02/关键字final/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">关键字final</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

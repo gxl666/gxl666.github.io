@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux学习-命令的运行 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一条命令的运行，经历了什么样的过程呢？它又需要什么样的环境配置来支持呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux学习-命令的运行">
+<meta property="og:url" content="http://gxl666.github.io/2016/08/29/Linux学习-命令的运行/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="一条命令的运行，经历了什么样的过程呢？它又需要什么样的环境配置来支持呢？">
+<meta property="og:updated_time" content="2016-08-29T09:52:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux学习-命令的运行">
+<meta name="twitter:description" content="一条命令的运行，经历了什么样的过程呢？它又需要什么样的环境配置来支持呢？">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Linux学习-命令的运行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/29/Linux学习-命令的运行/" class="article-date">
+  <time datetime="2016-08-29T02:53:55.000Z" itemprop="datePublished">2016-08-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux学习-命令的运行
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一条命令的运行，经历了什么样的过程呢？它又需要什么样的环境配置来支持呢？<br><a id="more"></a></p>
+<h2 id="命令运行的顺序"><a href="#命令运行的顺序" class="headerlink" title="命令运行的顺序"></a>命令运行的顺序</h2><ol>
+<li>以相对/绝对路径运行命令</li>
+<li>由alias找到该命令来运行</li>
+<li>由bash内建命令来运行</li>
+<li>透过$PATH这个变量的顺序搜寻到的第一个命令来运行</li>
+</ol>
+<h2 id="bash的环境配置文件"><a href="#bash的环境配置文件" class="headerlink" title="bash的环境配置文件"></a>bash的环境配置文件</h2><p>为什么一进入bash就有一些变量可用了？有配置文件的存在喽<br>命令别名以及自定义变量在注销bash后就失效啦怎么破？写入配置文件喽<br>login shell会读取两个配置文件：</p>
+<ol>
+<li>/etc/profile : 这是系统整体的配置；</li>
+<li>~/.bash_profile或~/.bash_login或~/.profile : 属于使用者个人的配置（这里的三个文件只会读取一个，按顺序来先找到哪个便读取哪个）；<br>查看/etc/profile和~/.bash_profile文件的内容可知：最终它们读取的配置文件是~/.bashrc这个文件，所以我们一般可以将自己的偏好设置写入该文件。但我们新写入的配置是不会立即生效的，只能注销后再次登录才可生效，因为/etc/profile和~/.bash_profile是只在用户登录时读取一次~/.bashrc文件。不需要重新登录而直接把配置文件的配置读入shell环境的两种方法：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> ~/.bashrc</div><div class="line">. ~/bashrc</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>去看一下/etc/profile和~/.bash_profile文件的内容也可以看到里面也是按这种方式来读取配置文件的。<br>no-login shell只会读取一个配置文件：~/.bashrc</p>
+<h2 id="bash通配符"><a href="#bash通配符" class="headerlink" title="bash通配符"></a>bash通配符</h2><p>bash通配符与正则表达式并不完全相同，这里只列下新发现的感觉比较有用的几个吧：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;,&gt;&gt;</td>
+<td>数据流重导向：输出向导，分别是”取代”与”累加”</td>
+</tr>
+<tr>
+<td>&lt;,&lt;&lt;</td>
+<td>数据流重导向：输入向导</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/08/29/Linux学习-命令的运行/" data-id="civgoujl4003fjxpvvehfiws2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/29/Linux学习-数据流重导向/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Linux学习-数据流重导向
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/29/Linux学习-历史命令/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux学习-历史命令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 10px;">English</a> <a href="/tags/Java/" style="font-size: 18px;">Java</a> <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 16px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14px;">Netty</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Spring/" style="font-size: 12px;">Spring</a> <a href="/tags/book/" style="font-size: 10px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/日志/" style="font-size: 12px;">日志</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/12/Java-NIO-Buffer/">Java NIO Buffer</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/12/Java-NIO-Channel/">Java NIO Channel</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/12/Java-NIO-Overview/">Java NIO Overview</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/12/Java-NIO-Tutorial/">Java NIO Tutorial</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/11/今夜我们一起学习NIO/">今夜我们一起学习NIO</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 gxl666<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="https://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java NIO FileChannel | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java NIO 文件管道，原文地址：http://tutorials.jenkov.com/java-nio/file-channel.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java NIO FileChannel">
+<meta property="og:url" content="http://gxl666.github.io/2016/11/14/Java-NIO-FileChannel/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="Java NIO 文件管道，原文地址：http://tutorials.jenkov.com/java-nio/file-channel.html">
+<meta property="og:updated_time" content="2016-11-14T02:22:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java NIO FileChannel">
+<meta name="twitter:description" content="Java NIO 文件管道，原文地址：http://tutorials.jenkov.com/java-nio/file-channel.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java-NIO-FileChannel" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/14/Java-NIO-FileChannel/" class="article-date">
+  <time datetime="2016-11-14T09:08:48.000Z" itemprop="datePublished">2016-11-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java NIO FileChannel
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java NIO 文件管道，原文地址：<a href="http://tutorials.jenkov.com/java-nio/file-channel.html" target="_blank" rel="external">http://tutorials.jenkov.com/java-nio/file-channel.html</a><br><a id="more"></a><br>Java NIO 文件管道连接着文件。使用文件管道你可以操作文件，从中读写数据。Java NIO 文件管道相对于标准 Java IO 是一种可选的读写文件的方式。<br>文件管道不能被设置为非阻塞模式，它永远运行于阻塞模式。</p>
+<h2 id="Opening-a-FileChannel"><a href="#Opening-a-FileChannel" class="headerlink" title="Opening a FileChannel"></a>Opening a FileChannel</h2><p>你在使用一个文件管道之前必须先得打开它，但是你又不能直接打开一个文件管道，你必须通过 InputStream, OutputStream 或者 RandomAccessFile 来获取一个文件管道。下面展示了使用一个 RandomAccessFile 打开一个文件管道的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RandomAccessFile aFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"data/nio-data.txt"</span>, <span class="string">"rw"</span>);</div><div class="line">FileChannel inChannel = aFile.getChannel();</div></pre></td></tr></table></figure></p>
+<h2 id="从一个文件管道中读取数据"><a href="#从一个文件管道中读取数据" class="headerlink" title="从一个文件管道中读取数据"></a>从一个文件管道中读取数据</h2><p>你可以调用 <code>read()</code> 方法从文件管道中读取数据，下面是一个小例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);</div><div class="line"><span class="keyword">int</span> bytesRead = inChannel.read(buf);</div></pre></td></tr></table></figure></p>
+<p>首先需要先分配一个字节缓冲区，然后将文件管道中的数据读入字节缓冲区中。<code>inChannel.read()</code> 方法返回值表示有多少数据写入了缓冲区内。如果返回了 -1，则代表已经读取到了文件末尾。</p>
+<h2 id="向一个文件管道中写入数据"><a href="#向一个文件管道中写入数据" class="headerlink" title="向一个文件管道中写入数据"></a>向一个文件管道中写入数据</h2><p>使用 <code>FileChannel.write()</code> 方法写数据到文件管道，该方法使用一个缓冲区对象作为参数。下面是一个小例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">String newData = <span class="string">"New String to write to file..."</span> + System.currentTimeMillis();</div><div class="line"></div><div class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);</div><div class="line">buf.clear();</div><div class="line">buf.put(newData.getBytes());</div><div class="line"></div><div class="line">buf.flip();</div><div class="line"></div><div class="line"><span class="keyword">while</span>(buf.hasRemaining()) &#123;</div><div class="line">    channel.write(buf);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>请注意，<code>FileChannel.write()</code> 方法是在一个 <code>while</code> 循环中被调用的。因为我们不知道缓冲区中有多少数据可以写入管道中，所以我们一直循环调用该方法直到缓冲区中无数据可写了。</p>
+<h2 id="关闭一个文件管道"><a href="#关闭一个文件管道" class="headerlink" title="关闭一个文件管道"></a>关闭一个文件管道</h2><p>当你用完了一个文件管道之后，你必须关闭它。下面是关闭的代码：<br><code>channel.close();</code></p>
+<h2 id="文件管道的位置"><a href="#文件管道的位置" class="headerlink" title="文件管道的位置"></a>文件管道的位置</h2><p>当你从一个文件管道中读写数据时，必须要指定一个确定的位置才行。你可以通过调用 <code>position()</code> 方法来获取文件管道当前的位置。你也可以调用 <code>position(long pos)</code> 方法来设置文件管道的位置。下面是这个方法使用的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">long</span> pos = channel.position();</div><div class="line">channel.position(pos + <span class="number">123</span>);</div></pre></td></tr></table></figure></p>
+<p>如果你把位置设置在文件大小范围之外，并尝试从中读取数据的话，你将会得到代表着文件末尾的 -1 返回值。<br>如果你把位置设置在文件大小范围之外，并尝试写入数据的话，文件大小会自动扩展以适应你设置的位置和写入的数据。这可能会产生“文件窟窿”，在写入数据的物理磁盘上也会有相应的隔代。</p>
+<h2 id="文件管道大小"><a href="#文件管道大小" class="headerlink" title="文件管道大小"></a>文件管道大小</h2><p>文件管道的 <code>size()</code> 方法会返回当前管道所连接文件的文件大小。下面是使用小例子：<br><code>long fileSize = channel.size();</code></p>
+<h2 id="文件管道的截取"><a href="#文件管道的截取" class="headerlink" title="文件管道的截取"></a>文件管道的截取</h2><p>你可以通过调用 <code>FileChannel.truncate()</code> 方法来截取一个文件。当你截取一个文件时，你需要指定一个截取的长度。下面是使用小例子：<br><code>channel.truncate(1024);</code><br>这个例子中将文件截取为 1024 字节的长度。</p>
+<h2 id="FileChannel-Force"><a href="#FileChannel-Force" class="headerlink" title="FileChannel Force"></a>FileChannel Force</h2><p>方法 <code>FileChannel.force()</code> 的作用是将管道中未写入文件的数据全部写入到磁盘文件。为了性能操作系统可能会在内存中缓存我们写入到磁盘文件的数据，除非你调用了 <code>force()</code> 方法。<br><code>force()</code> 方法会要求一个布尔值作为参数，这个布尔值决定是否将元数据（例如权限等）写入文件。下面是将数据和元数据写入文件的一个例子：<br><code>channel.force(true);</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/11/14/Java-NIO-FileChannel/" data-id="cizru1zfm003c68tw7zorffi0" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/14/Java-NIO-SocketChannel/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Java NIO SocketChannel
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/13/Java-NIO-Selector/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Java NIO Selector</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

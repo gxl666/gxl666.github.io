@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux学习-shell script | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写 shell script 过程中一些注意点！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux学习-shell script">
+<meta property="og:url" content="http://gxl666.github.io/2016/08/31/Linux学习-shell-script/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="写 shell script 过程中一些注意点！">
+<meta property="og:updated_time" content="2016-08-31T04:46:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux学习-shell script">
+<meta name="twitter:description" content="写 shell script 过程中一些注意点！">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Linux学习-shell-script" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/31/Linux学习-shell-script/" class="article-date">
+  <time datetime="2016-08-31T03:18:15.000Z" itemprop="datePublished">2016-08-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux学习-shell script
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写 shell script 过程中一些注意点！<br><a id="more"></a></p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ol>
+<li><code>#!/bin/bash</code> 这一句可以通知shell使用bash程序运行脚本，并且加载bash的相关环境配置（一般来说就是non-login shell的~/.bashrc）。</li>
+<li>普通的运行脚本文件的方式都是把脚本放在子程序中运行，脚本运行完毕，脚本里面定义的变量将不再存在了。但是使用<code>source sh001.sh</code>这种方式运行的话，会把脚本放在父程序中运行，即使脚本运行完毕，里面定义的一些变量仍然存在的。</li>
+<li>test测试命令功能有：文件类型测试、文件权限测试、文件属性（如最后修改时间等）测试、整数比较测试、字符串比较测试、多重条件测试、条件取反测试。。。太多功能，这里贴教程传送门：<a href="http://cn.linux.vbird.org/linux_basic/0340bashshell-scripts_3.php#test" target="_blank" rel="external">test-传送门</a></li>
+<li>中括号 “[]” 也可以用于条件测试，不过语法感觉有点恶心，设计优良的Linux为什么没有在这些地方设计成语法简单易用呢？还是传送门：<a href="http://cn.linux.vbird.org/linux_basic/0340bashshell-scripts_3.php#test_2" target="_blank" rel="external">[]-传送门</a></li>
+<li><p>一些预定义变量名称：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/path/to/scriptname opt1 opt2 opt3 opt4</div><div class="line">     <span class="variable">$0</span>(scriptname)             <span class="variable">$1</span>   <span class="variable">$2</span>   <span class="variable">$3</span>   <span class="variable">$4</span></div><div class="line"></div><div class="line"><span class="variable">$#</span> : 参数个数，这里是4</div><div class="line"><span class="variable">$@</span> : 代表 <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$2</span>"</span> <span class="string">"<span class="variable">$3</span>"</span> <span class="string">"<span class="variable">$4</span>"</span></div><div class="line">$* : 代表 <span class="string">"<span class="variable">$1</span> <span class="variable">$2</span> <span class="variable">$3</span> <span class="variable">$4</span>"</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>变量偏移命令 shift ，这玩意有用吗？还是传送门：<a href="http://cn.linux.vbird.org/linux_basic/0340bashshell-scripts_3.php#shift" target="_blank" rel="external">shift-传送门</a></p>
+</li>
+<li>条件判断语法：if…then,case…esac</li>
+<li>循环：while…do…done,until…do…done,for…do…done</li>
+<li>函数：function，内部有自己的$0,$1,$2…与脚本的这些变量并不相同</li>
+</ol>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sh [-nvx] scripts.sh</div><div class="line">选项与参数：</div><div class="line">-n : 不运行scripts.sh，只检查语法问题</div><div class="line">-v : 在运行scripts.sh之前将其内容输出</div><div class="line">-x : 将运行过程中运行的语句输出</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/08/31/Linux学习-shell-script/" data-id="cizru1zk5006w68twoi1c1wu3" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/01/Linux学习-date/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Linux学习-date
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/31/Linux学习-echo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Linux学习-echo</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

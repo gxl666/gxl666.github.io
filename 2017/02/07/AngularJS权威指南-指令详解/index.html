@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS权威指南-指令详解 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《AngularJS 权威教程》读书笔记，第十章——指令详解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS权威指南-指令详解">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/07/AngularJS权威指南-指令详解/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《AngularJS 权威教程》读书笔记，第十章——指令详解。">
+<meta property="og:updated_time" content="2017-02-07T11:43:42.743Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS权威指南-指令详解">
+<meta name="twitter:description" content="《AngularJS 权威教程》读书笔记，第十章——指令详解。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS权威指南-指令详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/07/AngularJS权威指南-指令详解/" class="article-date">
+  <time datetime="2017-02-07T07:23:17.000Z" itemprop="datePublished">2017-02-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS权威指南-指令详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《AngularJS 权威教程》读书笔记，第十章——指令详解。<br><a id="more"></a></p>
+<h2 id="指令定义"><a href="#指令定义" class="headerlink" title="指令定义"></a>指令定义</h2><p>对于指令，可以把它简单的理解成在特定 DOM 元素上运行的函数，指令可以扩展这个元素的功能！自定义指令语法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp'</span>, [])</div><div class="line">.directive(<span class="string">'myDirective'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$timeout, UserDefinedService</span>)</span>&#123;</div><div class="line">    <span class="comment">// 指令定义放在这里</span></div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        <span class="comment">// 一个指令定义对象，通过设置项来定义指令，在这里进行覆写</span></div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<ol>
+<li>name：指令的名字</li>
+<li>factory_function（函数）：这个函数返回一个对象，其中定义了指令的全部行为。$compile 服务利用这个方法返回的对象，在 DOM 调用指令时来构造指令的行为。</li>
+</ol>
+<h3 id="restrict"><a href="#restrict" class="headerlink" title="restrict"></a>restrict</h3><p>restrict 是一个可选的参数，它的值是字符串（E、A、C、M），它告诉 AngularJS 这个指令在 DOM 中可以以何种形式被声明。默认 AngularJS 认为 restrict 的值是 A，即以属性的形式来进行声明</p>
+<h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><p>优先级参数可以被设置为一个数值。大多数指令会忽略这个参数，使用默认值 0。一个元素上具有两个优先级不同的指令，优先级高的指令先执行；一个元素上具有两个优先级相同的指令，声明在前面的那个会被优先调用。</p>
+<h3 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h3><p>terminal 是一个布尔型参数，这个参数用来告诉 AngularJS 停止运行当前元素上比本指令优先级低的指令。但同优先级的指令还是会被执行。</p>
+<h3 id="template"><a href="#template" class="headerlink" title="template"></a>template</h3><p>template参数是可选的，它的值可以是：</p>
+<ul>
+<li>字符串：一段 HTML文本（每一行后需要有反斜杠，并可以使用表达式 ｛｛ expression ｝｝）</li>
+<li>一个接受两个参数的函数，参数为 tElement 和 tAttrs，并返回一个代表模板的字符串。tElement 和 tAttrs 中的 t 代表 template，是相对于 instance 的。在讨论链接和编译设置时会详细介绍，模板元素或属性与实际元素或属性之间的区别</li>
+</ul>
+<h3 id="templateUrl"><a href="#templateUrl" class="headerlink" title="templateUrl"></a>templateUrl</h3><p>templateUrl是可选的参数，可以是：</p>
+<ul>
+<li>一个代表外部 HTML 文件路径的字符串</li>
+<li>一个可以接受两个参数的函数，参数为 tElement 和 tAttrs，并返回一个外部 HTML 文件路径的字符串</li>
+</ul>
+<p>无论哪种方式，模板的 URL 都将通过 AngularJS 内置的安全层，特别是 $getTrustedResourceUrl，这样可以保护模板不会被不信任的源加载。<br>默认情况下，调用指令时会在后台通过 Ajax 来请求 HTML 模板文件，所以需要知道两件事情：</p>
+<ul>
+<li>在本地开发时，需要在后台运行一个本地服务器，用以从文件系统加载 HTML 模板，否则会导致 Cross Origin Request Script（CORS）错误</li>
+<li>模板加载是异步的，意味着编译和链接要暂停，等待模板加载完成</li>
+</ul>
+<p>通过 Ajax 异步加载大量模板将严重拖慢一个客户端应用的速度。为了避免延迟，可以在部署应用之前对 HTML 模板进行缓存，关于怎么缓存后面再说。<br>模板加在后，AngularJS 会将它默认缓存到 $templateCache 服务中。</p>
+<h3 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h3><p>replace 是可以可选参数，如果设置了这个参数，值必须为 true，因为默认值为 false。默认值意味着模板会被当做子元素插入到调用此指令的元素内部。</p>
+<h2 id="指令作用域"><a href="#指令作用域" class="headerlink" title="指令作用域"></a>指令作用域</h2><h3 id="scope参数"><a href="#scope参数" class="headerlink" title="scope参数"></a>scope参数</h3><p>scope参数是可选的，可以被设置为 true 或一个对象，默认值是 false，表示使用父作用域作为自己的作用域。<br>当 scope 设置为 true 时，会从父作用域继承并创建一个新的作用域对象。</p>
+<h3 id="隔离作用域"><a href="#隔离作用域" class="headerlink" title="隔离作用域"></a>隔离作用域</h3><p>创建具有隔离作用域的指令需要将 scope 属性设置为一个空对象 {}，这样指令模板就无法访问外部作用域了。</p>
+<h2 id="绑定策略"><a href="#绑定策略" class="headerlink" title="绑定策略"></a>绑定策略</h2><p>为了在使用了隔离作用域的指令中访问当前本地作用域中变量：</p>
+<ul>
+<li>本地作用域属性：@（or @attr），现在可以在指令中使用绑定的字符串了</li>
+<li>双向绑定：=（or =attr）</li>
+<li>父级作用域绑定：&amp;（or &amp;attr），使用父作用域中的一个函数，可以在指令中调用</li>
+</ul>
+<h3 id="transclude"><a href="#transclude" class="headerlink" title="transclude"></a>transclude</h3><p>transclude 是一个可选的参数。如果设置了，其值必须是 true，默认值是 false。<br>transclude 表示是否将当前元素的内容转移到模板中。如果设置为 true ，则表示把使用了指令的元素的内容转移到指令模板中有 ng-transclude 属性的标签内。</p>
+<h3 id="controller"><a href="#controller" class="headerlink" title="controller"></a>controller</h3><p>controller 参数可以是一个字符串或一个函数。当设置为字符串时，会以字符串的值为名字来查找注册在应用中的控制器的构造函数；设置为函数时，则表示定义一个内联的控制器。控制器可以注入 AngularJS 服务，也可以注入一些特殊服务：</p>
+<ol>
+<li>$scope：与指令元素相关联的当前作用域</li>
+<li>$element：当前指令对应的元素</li>
+<li>$attrs：由当前元素的属性组成的对象</li>
+<li>$transclude：嵌入链接函数会与对应的嵌入作用域进行预绑定，transclude 链接函数是实际被执行用来克隆元素和操作 DOM 的函数</li>
+</ol>
+<p>指令的控制器和 link 函数可以进行互换。控制器主要是用来提供可在指令间复用的行为，但链接函数只能在当前内部指令中定义行为，且无法在指令间复用，旨在将指令相互隔离开来。<br>由于指令可以 require 其他指令所使用的控制器，因此控制器常被用来放置在多个指令间共享的动作。如果我们希望将当前指令的 API 暴露给其他指令使用，可以使用 controller 参数，否则可以使用 link 来构造当前指令元素的功能性。<br>如果我们使用了 scope.$watch() 或者想要与 DOM 元素做实时的交互，使用链接是更好的选择。$scope 会在 DOM 元素被实际渲染之前传入到控制器中。在某些情况下，例如使用了嵌入，控制器中的作用域所反映的作用域可能与我们所期望的不一样，这种情况下，$scope 对象无法保证被正常更新。</p>
+<h3 id="controllerAs"><a href="#controllerAs" class="headerlink" title="controllerAs"></a>controllerAs</h3><p>controllerAs 参数用来设置控制器的别名，可以以此为名来发布控制器，并且作用域可以访问 controllerAs。这样就可以在视图中引用控制器，甚至无需注入 $scope。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp'</span>)</div><div class="line">    .directive(<span class="string">'myDirective'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">restrict</span>: <span class="string">'A'</span>,</div><div class="line">            <span class="attr">template</span>: <span class="string">'&lt;h4&gt;&#123;&#123; myController.msg &#125;&#125;&lt;/h4&gt;'</span>,</div><div class="line">            <span class="attr">controllerAs</span>: <span class="string">'myController'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">                <span class="keyword">this</span>.msg = <span class="string">'Hello World'</span></div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="require"><a href="#require" class="headerlink" title="require"></a>require</h3><p>require 参数可以被设置为字符串或数组，字符串代表另外一个指令的名字。require 会将控制器注入到其值所指定的指令中，并作为当前指令的链接函数的第四个参数。<br>字符串或数组元素的值是会在当前指令的作用域中使用的指令名称。<br>require 参数的值可以用下面的前缀进行修饰，这会改变查找控制器时的行为：</p>
+<ol>
+<li>?：如果在当前指令中没有找到所需要的控制器，会将 null 作为传递给 link 函数的第四个参数</li>
+<li>^：如果添加了 ^ 前缀，指令会在上游的指令链中查找 require 参数所指定的控制器</li>
+<li>?^：我们可选择地加载需要的指令并在父指令链中进行查找</li>
+<li>没有前缀：指令将会在自身所提供的控制器中进行查找，如果没有找到任何控制器（或具有指定名字的指令）就抛出一个错误</li>
+</ol>
+<h2 id="AngularJS的声明周期"><a href="#AngularJS的声明周期" class="headerlink" title="AngularJS的声明周期"></a>AngularJS的声明周期</h2><p>在 AngularJS 应用启动前，它们以 HTML 文本的形式保存在文本编辑器中。应用启动后会进行编译和链接，作用域会同 HTML 进行绑定，应用可以对用户在 HTML 中进行的操作进行实时响应。</p>
+<h3 id="编译阶段"><a href="#编译阶段" class="headerlink" title="编译阶段"></a>编译阶段</h3><p>在编译阶段，AngularJS 会遍历整个 HTML 文档并根据 JavaScript 中的指令定义来处理页面上声明的指令。<br>一旦对指令和其中的子模板编译完后，会返回一个叫做模板函数的函数。我们有机会在指令的模板函数被返回前，对编译后的 DOM 树进行修改。<br>一个指令的表现一旦编译完成，马上就可以通过编译函数对其进行访问，编译函数的签名包含有访问指令声明所在的元素（tElement）以及该元素其他属性（tAttrs）的方法。这个编译函数返回前面提到的模板函数，其中含有完整的解析树。<br>由于每个指令都可以有自己的模板和编译函数，每个模板返回的也都是自己的模板函数。链条顶部的指令会将内部子指令的模板合并在一起成为一个模板函数并返回，但在树的内部，只能通过模板函数访问其所处的分支。<br>最后，模板函数被传递给编译后的 DOM 树中每个指令定义规则中指定的链接函数。</p>
+<h3 id="compile"><a href="#compile" class="headerlink" title="compile"></a>compile</h3><p>compile 选项可以返回一个对象或函数。<br>compile 选项通常不会被频繁使用，但是 link 函数会被经常使用。本质上，我们设置了 link 选项，实际上是创建了一个 postLink() 链接函数，以便 compile() 函数可以定义链接函数。<br>通常情况下，如果设置了 compile 函数，说明我们希望在指令和实时数据被放到 DOM 中之前进行 DOM 操作，在这个函数中进行诸如添加和删除节点等 DOM 操作是安全的。<br>compile 和 link 选项是互斥的。如果同时设置了两者，那么会把 compile 所返回的函数当做链接函数，而 link 选项本身则会被忽略。<br>编译函数负责对模板 DOM 进行转换，链接函数负责将作用域和 DOM 进行链接。</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>链接函数签名：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// require 'SomeController'</span></div><div class="line">link: <span class="function"><span class="keyword">function</span>(<span class="params">scope, iElement, iAttrs, controller</span>)</span>&#123;</div><div class="line">    <span class="comment">// 在这里操作 DOM，可以访问 required 指定的控制器</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>形参含义：</p>
+<ol>
+<li>scope：指令用来在其内部注册监听器的作用域</li>
+<li>iElement：iElement 参数代表实例元素，指使用此指令的元素</li>
+<li>iAttrs：代表实例属性，是一个由定义在元素上的属性组成的标准化列表</li>
+<li>controller：指向 require 选项定义的控制器。如果没有设置 require 选项，那么 controller 参数的值为 undefined；如果 require 选项的值有多个，则该参数为数组</li>
+</ol>
+<h2 id="ngModel"><a href="#ngModel" class="headerlink" title="ngModel"></a>ngModel</h2><p>ngModel 是一个用法特殊的指令，它提供更底层的 API 来处理控制器内的数据。当我们在指令中使用 ngModel 时能够访问一个特殊的 API，这个 API 用来处理数据绑定、验证、CSS 更新等不实际操作 DOM 的事情。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/07/AngularJS权威指南-指令详解/" data-id="cizru1zai000z68twxk6vmlo2" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/12/AngularJS官方指南-指令/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS官方指南-指令
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/07/AngularJS权威指南-指令/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS权威指南-指令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Angular 学习之Promise | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="因为 Angular API 文档是全英文的，自己英语又这么渣，看了两行都看不下去了，只能自行翻译了（其实是自己汉字重新表达的）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular 学习之Promise">
+<meta property="og:url" content="http://gxl666.github.io/2017/01/22/Angular-学习之Promise/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="因为 Angular API 文档是全英文的，自己英语又这么渣，看了两行都看不下去了，只能自行翻译了（其实是自己汉字重新表达的）">
+<meta property="og:updated_time" content="2017-01-22T09:07:37.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular 学习之Promise">
+<meta name="twitter:description" content="因为 Angular API 文档是全英文的，自己英语又这么渣，看了两行都看不下去了，只能自行翻译了（其实是自己汉字重新表达的）">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Angular-学习之Promise" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/22/Angular-学习之Promise/" class="article-date">
+  <time datetime="2017-01-22T06:00:11.000Z" itemprop="datePublished">2017-01-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Angular/">Angular</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Angular 学习之Promise
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为 Angular API 文档是全英文的，自己英语又这么渣，看了两行都看不下去了，只能自行翻译了（其实是自己汉字重新表达的）<br><a id="more"></a><br>原文传送门：<a href="https://docs.angularjs.org/api/ng/service/$q" target="_blank" rel="external">Angular 学习之$q</a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>$q 是 AngularJS 内置的一种服务，可以让你在运行异步函数时使用函数运行完成后的返回值（或者是个异常）。<br>这是受<a href="https://github.com/kriskowal/q" target="_blank" rel="external">Kris Kowal’s</a>启发后，在 AngularJS 中实现的<a href="https://promisesaplus.com/" target="_blank" rel="external">Promises/A+</a>。<br>$q 可以以两种方式使用：</p>
+<ul>
+<li>类似于 Kris Kowal’s Q 或者 jQuery’s Deferred</li>
+<li>在某种程度上类似于 ES6 (ES2015) promises</li>
+</ul>
+<h2 id="q-constructor"><a href="#q-constructor" class="headerlink" title="$q constructor"></a>$q constructor</h2><p>ES6 流式风格的 promise 本质上是使用 $q 作为构造函数，并将 <code>resolver</code> 函数作为第一个参数传入构造函数。这和 ES6 中底层 Promise 的实现很相似，可以查看<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">MDN</a>。<br>尽管这种构造函数的方式在 AngularJS 是支持的，但这并不代表 ES6 Promise 的所有方法在 AngularJS 中都支持。<br>这种方式可以这么使用：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// for the purpose of this example let's assume that variables `$q` and `okToGreet`</span></div><div class="line"><span class="comment">// are available in the current lexical(词汇的，字典的) scope (they could have been injected or passed in).</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncGreet</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">  <span class="comment">// perform some asynchronous operation, resolve or reject the promise when appropriate.</span></div><div class="line">  <span class="keyword">return</span> $q(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (okToGreet(name)) &#123;</div><div class="line">        resolve(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        reject(<span class="string">'Greeting '</span> + name + <span class="string">' is not allowed.'</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;, <span class="number">1000</span>);</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> promise = asyncGreet(<span class="string">'Robin Hood'</span>);</div><div class="line">promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">greeting</span>) </span>&#123;</div><div class="line">  alert(<span class="string">'Success: '</span> + greeting);</div><div class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</div><div class="line">  alert(<span class="string">'Failed: '</span> + reason);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>注意：ES6 风格的 progress/notify 回调接口目前 AngularJS 并不支持。<br>注意：不想 ES6 的实现，构造函数中抛出了异常并不会自动触发 reject 回调。</p>
+<p>然而，传统的 CommonJS-style 用法在 AngularJS 中仍然是可用的，下面是它的文档。<br><a href="http://wiki.commonjs.org/wiki/Promises" target="_blank" rel="external">The CommonJS Promise proposal</a>将 promise 作为和一个对象交互的接口，它会返回一个异步动作的结果，在某一时刻该异步动作的结果有可能返回也有可能不返回。<br>从错误处理的角度来讲，deferred 和 promise APIs 是异步编程，而 <code>try</code>, <code>catch</code> 和 <code>throw</code> 是同步编程。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// for the purpose of this example let's assume that variables `$q` and `okToGreet`</span></div><div class="line"><span class="comment">// are available in the current lexical scope (they could have been injected or passed in).</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncGreet</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> deferred = $q.defer();</div><div class="line"></div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    deferred.notify(<span class="string">'About to greet '</span> + name + <span class="string">'.'</span>);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (okToGreet(name)) &#123;</div><div class="line">      deferred.resolve(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      deferred.reject(<span class="string">'Greeting '</span> + name + <span class="string">' is not allowed.'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;, <span class="number">1000</span>);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> deferred.promise;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> promise = asyncGreet(<span class="string">'Robin Hood'</span>);</div><div class="line">promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">greeting</span>) </span>&#123;</div><div class="line">  alert(<span class="string">'Success: '</span> + greeting);</div><div class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</div><div class="line">  alert(<span class="string">'Failed: '</span> + reason);</div><div class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">update</span>) </span>&#123;</div><div class="line">  alert(<span class="string">'Got notification: '</span> + update);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>首先，这种稍显复杂一点的编码方式的价值并不是很明显。promise 和 deferred APIs 带来的好处，可以参考：<a href="https://github.com/kriskowal/uncommonjs/blob/master/promises/specification.md" target="_blank" rel="external">https://github.com/kriskowal/uncommonjs/blob/master/promises/specification.md</a>。<br>另外，promise 可以让你整合传统的回调方法。如果想了解更多这方面信息，请参考<a href="https://github.com/kriskowal/q" target="_blank" rel="external">Q documentation</a>，特别是并行和串行添加 promises 这个章节。</p>
+<h2 id="The-Deferred-API"><a href="#The-Deferred-API" class="headerlink" title="The Deferred API"></a>The Deferred API</h2><p>通过调用 <code>$q.defer()</code> 可以构造一个 deferred 实例。<br>deferred 对象的作用就是以 APIs 的形式暴露出关联的 Promise 实例，而 Promise 实例是可以用于检测异步动作是否执行成功，也可以查看异步任务的状态。</p>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h3><ul>
+<li>resolve(value)-使用参数 value 解析出 promise。如果 value 是通过 <code>$q.reject</code> 构造的 rejection，promise 将会被 rejected 代替。</li>
+<li>rejected(reason)-使用参数 reason 拒绝 promise。这等价于使用 $q.reject 构造一个 rejection 来作为 resolve 的参数。</li>
+<li>notify(value)-在 promise 执行过程中提供更新状态码的功能。在 promise 解析或拒绝的过程中可以被调用多次。</li>
+</ul>
+<h3 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h3><ul>
+<li>promise-{Promise}-这个 deferred 关联的 promise 对象。</li>
+</ul>
+<h2 id="The-Promise-API"><a href="#The-Promise-API" class="headerlink" title="The Promise API"></a>The Promise API</h2><p>创建了一个 deferred 实例后，通过调用 <code>deferred.promise</code> 就可以得到一个 promise 实例。<br>promise 对象的作用就是可以让对异步任务的结果感兴趣者能够访问异步 deferred 任务完成后的结果。</p>
+<h3 id="Methods-1"><a href="#Methods-1" class="headerlink" title="Methods"></a>Methods</h3><ul>
+<li><code>then(successCallback, [errorCallback], [notifyCallback])-无论 promise 什么时候执行了 resolved 或者 rejected，then 都会使用成功回调或者错误回调尽可能快的调用异步任务的结果。成功回调或者错误回调都只有一个参数：就是异步任务执行的结果或者 rejection 的原因。另外，在 promise resolved 或者 rejected 之前，notify 回调函数会被调用零次或者多次，用来提供其处理进度。这个方法会返回一个新的 promise，这个新的 promise 会通过返回</code>successCallback<code>,</code>errorCallback<code>来 resolved 或者 rejected（除非 value 是一个 promise，如果是那样的话，最终会通过 [promise chaining](http://www.html5rocks.com/en/tutorials/es6/promises/#toc-promises-queues)执行）。通过</code>notifyCallback` 方法的返回值，它也会执行通知。promise 不能在 notifyCallback 方法中被 resolved 或者 rejected。当然了，errorCallback 和 notifyCallback 这两个参数是可选的。</li>
+<li><code>catch(errorCallback)-相当于</code>promise.then(null, errorCallback)` 的缩写</li>
+<li>`finally(callback, notifyCallback)-允许你在不改变最终值的前提下检测到 promise 的执行或者 rejection。这对于不论 promise 被 rejected 还是 resolved，最终都需要释放资源或者做一些清理工作很有用。如果需要更多这方面的信息，可以参考<a href="https://github.com/kriskowal/q/wiki/API-Reference#promisefinallycallback" target="_blank" rel="external">full specification</a>。</li>
+</ul>
+<h3 id="Chaining-promises"><a href="#Chaining-promises" class="headerlink" title="Chaining promises"></a>Chaining promises</h3><p>因为调用 promise 的 then 方法会返回一个新的 promise，所以可以很容易的创建 promise 的链式调用：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">promiseB = promiseA.then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> result + <span class="number">1</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// promiseB will be resolved immediately after promiseA is resolved and its value</span></div><div class="line"><span class="comment">// will be the result of promiseA incremented by 1</span></div></pre></td></tr></table></figure></p>
+<p>我们可以创建任意长度的 promise 链式调用，因为一个 promise 可以使用其他的 promise resolved（这将会进一步推迟其解析过程），因此我们可以在链式调用的任意一点暂停或推迟 promise 的解析。$http’s 拦截器就是通过这种形式实现的。</p>
+<h2 id="Differences-between-Kris-Kowal’s-Q-and-q"><a href="#Differences-between-Kris-Kowal’s-Q-and-q" class="headerlink" title="Differences between Kris Kowal’s Q and $q"></a>Differences between Kris Kowal’s Q and $q</h2><p>它们主要有两点不同：</p>
+<ul>
+<li>$q 被集成在 $rootScope.Scope 中，Scope 数据模型在 angular 中实现了观察者机制，这意味着可以在避免浏览器重绘 UI 的情况下更快的解析或者拒绝 promise。</li>
+<li>相对 $q，Q有更多的特性，但是那也花费了一定的代价。$q 是包含了异步任务所需要的重要功能的最小实现。</li>
+</ul>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">it(<span class="string">'should simulate promise'</span>, inject(<span class="function"><span class="keyword">function</span>(<span class="params">$q, $rootScope</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> deferred = $q.defer();</div><div class="line">  <span class="keyword">var</span> promise = deferred.promise;</div><div class="line">  <span class="keyword">var</span> resolvedValue;</div><div class="line"></div><div class="line">  promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123; resolvedValue = value; &#125;);</div><div class="line">  expect(resolvedValue).toBeUndefined();</div><div class="line"></div><div class="line">  <span class="comment">// Simulate resolving of promise</span></div><div class="line">  deferred.resolve(<span class="number">123</span>);</div><div class="line">  <span class="comment">// Note that the 'then' function does not get called synchronously.</span></div><div class="line">  <span class="comment">// This is because we want the promise API to always be async, whether or not</span></div><div class="line">  <span class="comment">// it got called synchronously or asynchronously.</span></div><div class="line">  expect(resolvedValue).toBeUndefined();</div><div class="line"></div><div class="line">  <span class="comment">// Propagate promise resolution to 'then' functions using $apply().</span></div><div class="line">  $rootScope.$apply();</div><div class="line">  expect(resolvedValue).toEqual(<span class="number">123</span>);</div><div class="line">&#125;));</div></pre></td></tr></table></figure>
+<h2 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h2><p><a href="https://docs.angularjs.org/api/ng/service/$rootScope" target="_blank" rel="external">$rootScope</a></p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p><code>$q(resolver);</code></p>
+<h3 id="Arguments"><a href="#Arguments" class="headerlink" title="Arguments"></a>Arguments</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">Param</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">resolver</td>
+<td style="text-align:left">function(function, function)</td>
+<td style="text-align:left">对于新创建的 promise 来说，第一个参数 function 解析这个 promise，第二个参数 function 拒绝这个 promise</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Returns"><a href="#Returns" class="headerlink" title="Returns"></a>Returns</h3><p><code>Promise</code> 新创建的 promise</p>
+<h2 id="Methods-2"><a href="#Methods-2" class="headerlink" title="Methods"></a>Methods</h2><ul>
+<li>defer(): 创建一个代表着异步任务的 Deferred 对象，返回值就是这个 Deferred 实例</li>
+<li>reject(reason)：创建一个使用指定 reason 拒绝的 promise。这个方法应该用在 promise 链接调用时拒绝一个 promise。如果你正在处理链式调用的最后一个 promise，那么你不必关心它。如果你把 deferreds/promises 和 catch/throw 做比较的话，你可以把 reject 当做 throw 关键字。这也相当于通过 promise 错误回调，你捕获了一个错误，并且你想要向前传递这个错误，所以你不得不 rethrow 这个错误通过 reject。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">promiseB = promiseA.then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</div><div class="line">  <span class="comment">// success: do something and resolve promiseB</span></div><div class="line">  <span class="comment">//          with the old or a new result</span></div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</div><div class="line">  <span class="comment">// error: handle the error if possible and</span></div><div class="line">  <span class="comment">//        resolve promiseB with newPromiseOrValue,</span></div><div class="line">  <span class="comment">//        otherwise forward the rejection to promiseB</span></div><div class="line">  <span class="keyword">if</span> (canHandle(reason)) &#123;</div><div class="line">   <span class="comment">// handle the error and recover</span></div><div class="line">   <span class="keyword">return</span> newPromiseOrValue;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> $q.reject(reason);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>reason 参数可以为任意类型：常量，消息，异常或者一个代表着拒绝原因的对象。返回值是一个使用 reason 拒绝的 promise。</p>
+<ul>
+<li>when(value, [successCallback], [errorCallback], [progressCallback])：将一个值或者第三方的 then-able promise 包装成 $q promise。当你处理一个有可能是 promise 也有可能不是 promise 的对象时，或者处理一个来自不受信任源的 promise 时，该方法比较有用。它的参数含义如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Param</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">*</td>
+<td style="text-align:left">Value or promise</td>
+</tr>
+<tr>
+<td style="text-align:left">successCallback(optional)</td>
+<td style="text-align:left">Function=</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">errorCallback(optional)</td>
+<td style="text-align:left">Function=</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">progressCallback(optional)</td>
+<td style="text-align:left">Function=</td>
+</tr>
+</tbody>
+</table>
+<p>该方法返回值是一个传入参数转化后的 promise。</p>
+<ul>
+<li>resolve(value, [successCallback], [errorCallback], [progressCallback])：该方法是 ES6 语法中的 <code>when</code> 方法的别名，这里主要是为了维持命名一致性。它的参数含义如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Param</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">*</td>
+<td style="text-align:left">Value or promise</td>
+</tr>
+<tr>
+<td style="text-align:left">successCallback(optional)</td>
+<td style="text-align:left">Function=</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">errorCallback(optional)</td>
+<td style="text-align:left">Function=</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">progressCallback(optional)</td>
+<td style="text-align:left">Function=</td>
+</tr>
+</tbody>
+</table>
+<p>该方法返回值也是一个 promise。</p>
+<ul>
+<li>all(promises)：将多个 promises 结合为一个 promise，当所有的 promise 被解析后也就是这个结合体被解析。它的参数就是一个 promise 数组或以 promise 为值的 hash 映射对象。该方法返回值就是结合体 promise，所有 promise 都被解析时结合体 promise 才会被解析，只要有一个 promise 被拒绝，结合体 promise 就会被拒绝。</li>
+<li>race(promises)：基本含义跟 all 方法相同，但是会结合体 promise 会尽可能快的被解析或者拒绝。</li>
+</ul>
+<h2 id="拓展学习"><a href="#拓展学习" class="headerlink" title="拓展学习"></a>拓展学习</h2><ol>
+<li>看完了这个文档，啥也没学会，还是看中文的好：<a href="http://es6.ruanyifeng.com/#docs/promise" target="_blank" rel="external">Promise 对象</a></li>
+<li>还是熟悉的汉字：<a href="http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html" target="_blank" rel="external">jQuery的deferred对象详解</a></li>
+</ol>
+<h2 id="单词学习"><a href="#单词学习" class="headerlink" title="单词学习"></a>单词学习</h2><ul>
+<li>compliant,服从的，顺从的</li>
+<li>resemble，相似，类似于</li>
+<li>essentially ，本质上</li>
+<li>implicitly，含蓄地，暗中的</li>
+<li>expose,暴露，公开</li>
+<li>derived,推断出，衍生出</li>
+<li>fulfillment，执行，实行</li>
+<li>defer,推迟，服从</li>
+<li>flickering，闪烁</li>
+<li>consistency，一致性</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/01/22/Angular-学习之Promise/" data-id="cizru1z88000668twmvk20pmv" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Angular/">Angular</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/23/再遇AngularJS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          再遇AngularJS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/02/2016-年终总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">2016 年终总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

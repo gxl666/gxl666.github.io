@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java NIO Selector | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java NIO 选择器，原文地址：http://tutorials.jenkov.com/java-nio/selectors.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java NIO Selector">
+<meta property="og:url" content="http://gxl666.github.io/2016/11/13/Java-NIO-Selector/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="Java NIO 选择器，原文地址：http://tutorials.jenkov.com/java-nio/selectors.html">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/overview-selectors.png">
+<meta property="og:updated_time" content="2016-11-14T01:08:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java NIO Selector">
+<meta name="twitter:description" content="Java NIO 选择器，原文地址：http://tutorials.jenkov.com/java-nio/selectors.html">
+<meta name="twitter:image" content="http://tutorials.jenkov.com/images/java-nio/overview-selectors.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java-NIO-Selector" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/13/Java-NIO-Selector/" class="article-date">
+  <time datetime="2016-11-13T15:27:52.000Z" itemprop="datePublished">2016-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java NIO Selector
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java NIO 选择器，原文地址：<a href="http://tutorials.jenkov.com/java-nio/selectors.html" target="_blank" rel="external">http://tutorials.jenkov.com/java-nio/selectors.html</a><br><a id="more"></a><br>选择器是 Java NIO 中的一个模块，它可以管理一个或多个 NIO 管道，并且决定哪一个管道可以进行读写操作。这种方式可以让一个线程管理多个管道或者说多个网络连接。</p>
+<h2 id="为什么使用选择器"><a href="#为什么使用选择器" class="headerlink" title="为什么使用选择器"></a>为什么使用选择器</h2><p>使用一个线程去处理多个管道的优势在于你仅仅需要很少数量的线程就可以处理很多的管道。实际上，你可以只用一个线程去处理你所有的管道。操作系统在线程间切换是非常耗时的，并且每个线程都有占有一定的操作系统资源（内存）。因此，你的程序使用的线程越少越好。<br>考虑到现在操作系统和 CPU 在运行多任务方面已经变得越来越好了，因此在多线程间的切换所花销的时间变得越来越小。实际上，现在的 CPU 有多个核心，你也许会觉得不使用多线程可能浪费 CPU 资源。但是无论如何，我们不会在此讨论这些问题。这里我们优先讨论的是你可以使用选择器让一个线程去管理多个管道。<br>下面的插图展示了使用选择器后让一个线程管理 3 个管道：<br><img src="http://tutorials.jenkov.com/images/java-nio/overview-selectors.png" alt="Java NIO: A Thread users a Selector to handle 3 Channel&#39;s"></p>
+<h2 id="创建一个选择器"><a href="#创建一个选择器" class="headerlink" title="创建一个选择器"></a>创建一个选择器</h2><p>你可以像下面写的一样通过调用 <code>Selector.open()</code> 方法来创建一个选择器：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Selector selector = Selector.open();</div></pre></td></tr></table></figure></p>
+<h2 id="在管道上注册选择器"><a href="#在管道上注册选择器" class="headerlink" title="在管道上注册选择器"></a>在管道上注册选择器</h2><p>为了把管道交给选择器管理，你必须在管道上注册选择器。管道上注册选择器需要调用 <code>SelectableChannel.register()</code> 方法，正如下面所写的一样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">channel.configureBlocking(<span class="keyword">false</span>);</div><div class="line"></div><div class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ);</div></pre></td></tr></table></figure>
+<p>交给选择器管理的管道必须使用非阻塞模式。这也就意味着你不能把文件管道交给选择器管理，因为文件管道不能切换成非阻塞模式。而套接字管道则可以非常便利的交给选择器管理。<br>请注意 <code>register()</code> 方法的第二个参数。它是“感兴趣设置”，即管道想要选择器监听的事件。下面是可以监听的事件的四种类型：</p>
+<ol>
+<li>连接</li>
+<li>接受</li>
+<li>可读</li>
+<li>可写</li>
+</ol>
+<p>一个管道第一个事件也叫做“准备好”。因此一个管道已经成功连接了其他的服务器就是指“连接准备好”。一个服务器端套接字管道接受了一个到来的连接就是“接受”。一个管道中已经有数据可读了就是“可读”状态。同样的，一个管道可以接受写入的数据时就是“可写”状态。<br><code>SelectionKey</code> 对象的四个常量代表了这四种状态：</p>
+<ol>
+<li>SelectionKey.OP_CONNECT</li>
+<li>SelectionKey.OP_ACEPT</li>
+<li>SelectionKey.OP_READ</li>
+<li>SelectionKey.OP_WRITE</li>
+</ol>
+<p>如果你想监听多个事件或者所有事件，可以像下面这么写：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;</div></pre></td></tr></table></figure></p>
+<p>下面我将继续讲解这些事件类型。</p>
+<h2 id="SelectionKey’s"><a href="#SelectionKey’s" class="headerlink" title="SelectionKey’s"></a>SelectionKey’s</h2><p>正如你在前面看到的，当你在一个管道上通过 <code>channel.register(selector, SelectionKey.OP_READ);</code> 方法注册了选择器后，该方法将会返回一个 <code>SelectionKey</code> 对象。这个 <code>SelectionKey</code> 对象包含如下几个令人感兴趣的属性：</p>
+<ul>
+<li>The interest set</li>
+<li>The ready set</li>
+<li>The Channel</li>
+<li>The Selector</li>
+<li>An attached object(optional)</li>
+</ul>
+<p>下面我会逐个讲解这些属性。</p>
+<h3 id="Interest-Set"><a href="#Interest-Set" class="headerlink" title="Interest Set"></a>Interest Set</h3><p>正如在上面小节“Registering Channels with the Selector”所说的，感兴趣集合表示你感兴趣的事件。你可以通过 <code>Selectionkey</code> 对这些感兴趣集合进行读写，就如下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> interestSet = selectionKey.interestOps();</div><div class="line"></div><div class="line"><span class="keyword">boolean</span> isInterestedInAccept = interestSet &amp; SelectionKey.OP_ACCEPT;</div><div class="line"><span class="keyword">boolean</span> isInterestedInConnect = interestSet &amp; SelectionKey.OP_CONNECT;</div><div class="line"><span class="keyword">boolean</span> isInterestedInRead    = interestSet &amp; SelectionKey.OP_READ;</div><div class="line"><span class="keyword">boolean</span> isInterestedInWrite   = interestSet &amp; SelectionKey.OP_WRITE;</div></pre></td></tr></table></figure></p>
+<p>你可以使用给定的 <code>SelectionKey</code> 的常量和感兴趣的集合进行位与操作来判断感兴趣集合是否包含某个特定的事件。</p>
+<h3 id="Ready-Set"><a href="#Ready-Set" class="headerlink" title="Ready Set"></a>Ready Set</h3><p>“就绪集合”是指管道已经准备好可以进行的一系列操作的集合。在注册了选择器后，你才可以访问其“就绪集合”。选择器我们下一章才会讲到。你可以像下面这样访问“就绪集合”：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> readySet = selectionKey.readyOps();</div></pre></td></tr></table></figure></p>
+<p>你可以像测试感兴趣集合那样测试就绪集合来看看管道上那些操作已经在就绪状态。但是，你需要使用下面四种方法代替，这四种方法都返回一个布尔值：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">selectionKey.isAcceptable();</div><div class="line">selectionKey.isConnectable();</div><div class="line">selectionKey.isReadable();</div><div class="line">selectionKey.isWritable();</div></pre></td></tr></table></figure></p>
+<h3 id="管道-选择器"><a href="#管道-选择器" class="headerlink" title="管道+选择器"></a>管道+选择器</h3><p>在 <code>SelectionKey</code> 中访问管道和选择器是非常简单的。下面是访问的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Channel  channel  = selectionKey.channel();</div><div class="line"></div><div class="line">Selector selector = selectionKey.selector();</div></pre></td></tr></table></figure></p>
+<h3 id="附加的对象"><a href="#附加的对象" class="headerlink" title="附加的对象"></a>附加的对象</h3><p>你可以在 <code>SelectionKey</code> 上附加一个对象或者为管道附加更详细的信息，这在识别给定的管道时是非常方便的。例如，你也许会附加一个与管道配合使用的缓冲区对象，或者聚合着更多数据的一个其他对象。下面展示了怎么添加一个额外的对象：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">selectionKey.attach(theObject);</div><div class="line"></div><div class="line">Object attachedObj = selectionKey.attachment();</div></pre></td></tr></table></figure></p>
+<p>你也可以在给管道注册选择器时附加一个对象，正如下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);</div></pre></td></tr></table></figure></p>
+<h2 id="通过选择器选择管道"><a href="#通过选择器选择管道" class="headerlink" title="通过选择器选择管道"></a>通过选择器选择管道</h2><p>一旦你在一个选择器上注册了一个或者多个管道之后，你就可以调用选择器的 <code>select()</code> 方法来获取特定条件的管道了。这些方法会返回你关注的事件在就绪状态的管道。换句话说，如果你关注的是处于可读状态的管道，那么通过调用 <code>select()</code> 方法你就会得到可读状态的管道。<br>下面是几种 <code>select()</code> 方法：</p>
+<ul>
+<li>int select()</li>
+<li>int select(long timeout)</li>
+<li>int selectNow()</li>
+</ul>
+<p><code>select()</code> 会阻塞线程直到可以找到一个你关注的事件在就绪状态的管道。<br><code>select(long timeout)</code> 的作用和 <code>select()</code> 相同，只是它阻塞线程的时间是有限的，即其参数 <code>timeout</code><br><code>selectNow()</code> 方法并不会阻塞线程。无论是否有符合条件的管道，它都会立即返回（PS：这句话看得也不太懂。。。）。</p>
+<p>三种 <code>select()</code> 方法返回的 <code>int</code> 类型的值表示有多少个管道在就绪状态。这也就是说，自从你上次调用 <code>select()</code> 方法之后，有多少个管道变成了就绪状态。如果你调用了 <code>select()</code> 方法，并且因为只有一个管道在就绪状态所以它返回了 1，然后你再次调用 <code>select()</code> 方法，并且另外一个管道也变成了就绪状态，那么第二次调用 <code>select()</code> 方法还是返回 1。如果你没有使用第一个已经就绪的管道，那么现在有两个管道在就绪状态，但是每次调用 <code>select()</code> 的时候只有一个管道变成了就绪状态。</p>
+<h3 id="selectedKeys"><a href="#selectedKeys" class="headerlink" title="selectedKeys()"></a>selectedKeys()</h3><p>一旦你调用了一种 <code>select()</code> 方法，那么它就会返回目前在就绪状态的管道的数量，你可以通过“selected key set”来访问在就绪状态的管道，即调用选择器的 <code>selectedKeys()</code> 方法。正如下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</div></pre></td></tr></table></figure></p>
+<p>当你调用 <code>Channelregister()</code> 方法为一个管道注册了选择器后，它会返回一个 <code>SelectionKey</code> 对象。这个对象代表着你在选择器上注册的管道。你可以通过 <code>selectedKeySet()</code> 方法来访问这个对象。<br>你可以遍历这个已选择的键集合来访问就绪状态的管道。就像下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</div><div class="line"></div><div class="line">Iterator&lt;SelectionKey&gt; keyIterator = selectedKeys.iterator();</div><div class="line"></div><div class="line"><span class="keyword">while</span>(keyIterator.hasNext()) &#123;</div><div class="line">    </div><div class="line">    SelectionKey key = keyIterator.next();</div><div class="line"></div><div class="line">    <span class="keyword">if</span>(key.isAcceptable()) &#123;</div><div class="line">        <span class="comment">// a connection was accepted by a ServerSocketChannel.</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isConnectable()) &#123;</div><div class="line">        <span class="comment">// a connection was established with a remote server.</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isReadable()) &#123;</div><div class="line">        <span class="comment">// a channel is ready for reading</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isWritable()) &#123;</div><div class="line">        <span class="comment">// a channel is ready for writing</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    keyIterator.remove();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个循环遍历了被选择的键集合。对于每个键，都在循环里测试了它是处于哪种就绪状态。<br>请注意我们在每次循环末尾调用了 <code>keyIterator.remove()</code> 方法。选择器自身并不会移出被选择的键。所以在我们处理完管道之后，我们需要自己溢出相应的键。下一次这个管道变为“就绪”状态时，选择器会再次将其加入被选择的键集合中。<br><code>SelectionKey.channel()</code> 方法返回的管道应该可以转换为你需要的管道类型，例如：服务端套接字管道或者套接字管道等等。</p>
+<h2 id="wakeUp"><a href="#wakeUp" class="headerlink" title="wakeUp()"></a>wakeUp()</h2><p>某个线程调用了 <code>select()</code> 方法阻塞了，即使没有管道在就绪状态，也有办法让其从 <code>select()</code> 方法返回。只要其他线程在第一个线程调用 <code>select()</code> 方法的那个对象上调用了 <code>Selector.wakeup()</code> 方法即可。阻塞在 <code>select()</code> 方法上的线程会立即返回。<br>如果其他线程调用了 <code>wakeup()</code> 方法，但当前没有线程阻塞在 <code>select()</code> 方法上，那么下个调用 <code>select()</code> 方法的线程会立即“醒来（wake up）”（PS：应该就是会立即返回吧）。</p>
+<h2 id="close"><a href="#close" class="headerlink" title="close()"></a>close()</h2><p>你在用完选择器之后可以调用它的 <code>close()</code> 方法来关闭它。这个方法会关闭选择器和注册在选择器上的被选择的键集合。但是管道本身并不会关闭。</p>
+<h2 id="Full-Selector-Example"><a href="#Full-Selector-Example" class="headerlink" title="Full Selector Example"></a>Full Selector Example</h2><p>下面是一个完整的例子，演示了开启一个选择器，并为其注册一个管道（管道初始化没有考虑在内），然后监听选择器里对四种事件（可接受，连接，可读，可写）处于就绪状态的管道。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">Selector selector = Selector.open();</div><div class="line"></div><div class="line">channel.configureBlocking(<span class="keyword">false</span>);</div><div class="line"></div><div class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ);</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</div><div class="line"></div><div class="line">  <span class="keyword">int</span> readyChannels = selector.select();</div><div class="line"></div><div class="line">  <span class="keyword">if</span>(readyChannels == <span class="number">0</span>) <span class="keyword">continue</span>;</div><div class="line"></div><div class="line"></div><div class="line">  Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</div><div class="line"></div><div class="line">  Iterator&lt;SelectionKey&gt; keyIterator = selectedKeys.iterator();</div><div class="line"></div><div class="line">  <span class="keyword">while</span>(keyIterator.hasNext()) &#123;</div><div class="line"></div><div class="line">    SelectionKey key = keyIterator.next();</div><div class="line"></div><div class="line">    <span class="keyword">if</span>(key.isAcceptable()) &#123;</div><div class="line">        <span class="comment">// a connection was accepted by a ServerSocketChannel.</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isConnectable()) &#123;</div><div class="line">        <span class="comment">// a connection was established with a remote server.</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isReadable()) &#123;</div><div class="line">        <span class="comment">// a channel is ready for reading</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isWritable()) &#123;</div><div class="line">        <span class="comment">// a channel is ready for writing</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    keyIterator.remove();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/11/13/Java-NIO-Selector/" data-id="cizru1zgh004068tw97ov8fkj" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/14/Java-NIO-FileChannel/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Java NIO FileChannel
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/13/Java-NIO-Channel-to-Channel-Transfers/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Java NIO Channel to Channel Transfers</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

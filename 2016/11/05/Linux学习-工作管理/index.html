@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux学习-工作管理 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="有用的工作管理，job control。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux学习-工作管理">
+<meta property="og:url" content="http://gxl666.github.io/2016/11/05/Linux学习-工作管理/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="有用的工作管理，job control。">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gddr92k6j30lx041dib.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdhc4k5jj30i300ujrb.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdnc6l5hj30ib06p763.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdre9kluj30l608p76j.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gduxnpfwj30ld09e76r.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdzf2w1rj30mj0g57a0.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9ge6s6f25j30jy01kdga.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9ge7wq8d4j30mx07zwg2.jpg">
+<meta property="og:updated_time" content="2016-11-04T13:27:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux学习-工作管理">
+<meta name="twitter:description" content="有用的工作管理，job control。">
+<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gddr92k6j30lx041dib.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Linux学习-工作管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/05/Linux学习-工作管理/" class="article-date">
+  <time datetime="2016-11-04T20:39:59.000Z" itemprop="datePublished">2016-11-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux学习-工作管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有用的工作管理，job control。<br><a id="more"></a></p>
+<h2 id="什么是工作管理"><a href="#什么是工作管理" class="headerlink" title="什么是工作管理"></a>什么是工作管理</h2><p>开启一个 bash，就可以操作 Linux 系统，那么怎么同时让系统执行多个任务呢？没错，这就是工作管理的内容。<br>注意：</p>
+<pre><code>- 工作管理的程序只能是来自你自己的 shell 的子程序（只能管理自己的 bash）
+- 前景：foreground
+- 背景：background
+- 背景中运行的程序的状态又可以分为“暂停（stop）”和“运行中（running）”
+</code></pre><h2 id="怎么将命令丢到背景中运行"><a href="#怎么将命令丢到背景中运行" class="headerlink" title="怎么将命令丢到背景中运行"></a>怎么将命令丢到背景中运行</h2><p>上一篇已经说了就是直接在命令后加上一个<code>&amp;</code><br><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gddr92k6j30lx041dib.jpg" alt="有图有真相"><br>命令执行完成后，终端会有相应显示：<br><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdhc4k5jj30i300ujrb.jpg" alt="命令执行完成"><br>这样确实把命令丢到了背景中运行了，但是命令的输出却还是会显示在终端上，可以使用数据流重导向来将其输出导向到指定文件中。</p>
+<h2 id="将目前的工作丢到背景中暂停：-ctrl-z"><a href="#将目前的工作丢到背景中暂停：-ctrl-z" class="headerlink" title="将目前的工作丢到背景中暂停：[ctrl]+z"></a>将目前的工作丢到背景中暂停：[ctrl]+z</h2><p>使用 vim 编辑文件时，在一般模式下，按下 [ctrl]+z 可将目前的编辑工作丢到背景中，并且其是暂停状态。</p>
+<h2 id="观察目前的背景中的工作的状态-jobs"><a href="#观察目前的背景中的工作的状态-jobs" class="headerlink" title="观察目前的背景中的工作的状态:jobs"></a>观察目前的背景中的工作的状态:jobs</h2><p><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdnc6l5hj30ib06p763.jpg" alt="jobs"><br>图中，+代表最近一次被放到背景中的工作，-代表最近第二个放到背景中的工作，第三个以及后面的就不会有 +/- 符号存在了。而且，仅输入 <code>fg</code> 命令时，带有 + 符号的工作会被拿到前景来处理。</p>
+<h2 id="将工作拿到前景来处理：fg"><a href="#将工作拿到前景来处理：fg" class="headerlink" title="将工作拿到前景来处理：fg"></a>将工作拿到前景来处理：fg</h2><p><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdre9kluj30l608p76j.jpg" alt="fg"></p>
+<h2 id="让工作在背景下的状态变成运行中：bg"><a href="#让工作在背景下的状态变成运行中：bg" class="headerlink" title="让工作在背景下的状态变成运行中：bg"></a>让工作在背景下的状态变成运行中：bg</h2><p>[ctrl]+z 可以将目前的工作丢到背景中，但是工作在背景中是暂停状态的。如何使其变成运行中状态呢？<br><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gduxnpfwj30ld09e76r.jpg" alt="bg"><br>图中 <code>bg %3;</code> 的输出会让命令最后带上 <code>&amp;</code> ，所以其会变成运行中状态了</p>
+<h2 id="杀死想杀死的工作：kill"><a href="#杀死想杀死的工作：kill" class="headerlink" title="杀死想杀死的工作：kill"></a>杀死想杀死的工作：kill</h2><p><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9gdzf2w1rj30mj0g57a0.jpg" alt="kill"><br>-9与-15的区别：在使用 vim 编辑一个文件时，会产生一个 .filename.swp 的临时文件，-15杀死这个 vim 进程，.filename.swp 也会正常被清理掉，而-9则不会。<br>注意：kill 后面接的数字默认会是 PID，如果想要管理 bash 的工作，就得加上 % 了。</p>
+<h2 id="离线管理问题"><a href="#离线管理问题" class="headerlink" title="离线管理问题"></a>离线管理问题</h2><p>以上我们所说的背景都是相对于当前 bash 所说的，也就是说当前 bash 关闭了，其背景中的程序也会中断，所以这个背景跟系统背景并不相同。如果想关闭终端之后还想让命令继续进行，则需要使用 <code>nohup</code> 了：<br><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9ge6s6f25j30jy01kdga.jpg" alt="nohup"><br>好玩的：<br><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1f9ge7wq8d4j30mx07zwg2.jpg" alt="好玩的"><br>这样下次登陆后， <code>sleep500.sh</code> 还在运行中。其中输出的信息会自动重导向到 <code>~/nohup.out</code> 中。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/11/05/Linux学习-工作管理/" data-id="cizru1zlq008d68twukp4mdkf" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/05/Linux学习-程序管理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Linux学习-程序管理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/05/Linux学习-什么是程序/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Linux学习-什么是程序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

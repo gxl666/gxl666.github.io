@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java NIO: Non-blocking Server | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java NIO: 非阻塞服务器，原文地址：http://tutorials.jenkov.com/java-nio/non-blocking-server.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java NIO: Non-blocking Server">
+<meta property="og:url" content="http://gxl666.github.io/2016/11/15/Java-NIO-Non-blocking-Server/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="Java NIO: 非阻塞服务器，原文地址：http://tutorials.jenkov.com/java-nio/non-blocking-server.html">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-1.png">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-2.png">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-3.png">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-4.png">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-5.png">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-6.png">
+<meta property="og:updated_time" content="2016-11-20T07:34:39.270Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java NIO: Non-blocking Server">
+<meta name="twitter:description" content="Java NIO: 非阻塞服务器，原文地址：http://tutorials.jenkov.com/java-nio/non-blocking-server.html">
+<meta name="twitter:image" content="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java-NIO-Non-blocking-Server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/15/Java-NIO-Non-blocking-Server/" class="article-date">
+  <time datetime="2016-11-15T10:13:47.000Z" itemprop="datePublished">2016-11-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java NIO: Non-blocking Server
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java NIO: 非阻塞服务器，原文地址：<a href="http://tutorials.jenkov.com/java-nio/non-blocking-server.html" target="_blank" rel="external">http://tutorials.jenkov.com/java-nio/non-blocking-server.html</a><br><a id="more"></a><br>即使你已经理解了 Java NIO 中一些核心概念（比如选择器，管道，缓冲区等），但是设计一个非阻塞服务器仍然是非常困难的。相对于阻塞式 IO 来说，非阻塞式 IO 使用起来还是有些难点的。这篇非阻塞式服务器教程将讨论解决这些难点的主要方法。<br>关于如何设计一个非阻塞式服务器这个问题，我们能找到的有用的信息并不多。因此，本文中提到的方法只是基于我自己的工作和想法。如果你有其他更好的方法，请告诉我。你可以在本文下方的评论区回复我或者发邮件告知我（可以在 About 页面找到我的邮箱地址），也可以在 Twitter 上艾特我。<br>本文主要围绕着描述设计 Java NIO 服务器的方法。但是，我相信这些方法同样适用于拥有一些像 Java NIO 中选择器等结构的语言。据我所知，选择器这些结构是由底层操作系统提供的，所以学习本篇教程后你也会加深其他语言的理解。</p>
+<h2 id="Non-blocking-Server-Github-Repository"><a href="#Non-blocking-Server-Github-Repository" class="headerlink" title="Non-blocking Server-Github Repository"></a>Non-blocking Server-Github Repository</h2><p>关于本文中讲解的原理实践代码，我已经把它放在了一个 Github 仓库里。下面是仓库地址：<br><a href="https://github.com/jjenkov/java-nio-server" target="_blank" rel="external">https://github.com/jjenkov/java-nio-server</a></p>
+<h2 id="Non-blocking-IO-Pipelines"><a href="#Non-blocking-IO-Pipelines" class="headerlink" title="Non-blocking IO Pipelines"></a>Non-blocking IO Pipelines</h2><p>非阻塞的 IO 管道是连接其他模块的链条。这包括了非阻塞风格的读写操作。下面的插图展示了最简单的非阻塞式 IO 的管道：<br><img src="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-1.png" alt=""><br>这图展示了一个模块使用选择器来监听管道中是否有数据可读。该模块从管道读出数据后经过处理再此输出到另一个管道中。<br>一个非阻塞式 IO 管道并不需要同时读写数据。一些管道仅仅读取数据，而另外一些管道仅仅是写数据。<br>上面的图仅仅展示了一个单一的模块。一个非阻塞式 IO 管道可能拥有超过一个处理数据的模块。非阻塞式 IO 管道的长度取决于该管道需要完成什么工作。<br>一个非阻塞式 IO 管道也可能同时从多个管道中读取数据。例如，从多个套接字管道中读取数据。<br>上图中流的控制是清晰简单的。模块通过选择器初始化了读数据的管道。这里并不是管道把数据推送到了选择器，虽然我们建议这么做。</p>
+<h2 id="Non-blocking-vs-Blocking-IO-Pipelines"><a href="#Non-blocking-vs-Blocking-IO-Pipelines" class="headerlink" title="Non-blocking vs. Blocking IO Pipelines"></a>Non-blocking vs. Blocking IO Pipelines</h2><p>非阻塞式 IO 和阻塞式 IO 最大的不同之处在于怎么从管道（套接字连接或文件）中读取数据。<br>IO 管道通常从流（套接字连接或者文件）中读取数据，并把数据分割成特定的块。这就像是使用分词器将数据分成可解析的词。相应的，我们将流数据分割成较大的消息。我会调用一个模块将流数据分割成消息读取器可以读取的词。下图展示了消息读取器将流数据分割成消息：<br><img src="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-2.png" alt=""><br>阻塞式 IO 接口可以使用 <code>InputStream</code> 这样的接口从管道中读取数据，并且 <code>InputStream</code> 这样的接口会阻塞线程直到管道中有数据可读。这也就是实现了一个阻塞式消息读取器。<br>使用阻塞式 IO 接口大大简化了消息读取器的实现。一个阻塞式消息读取器并不需要处理流中没有数据可读或者仅仅从流中读取了部分消息抑或消息需要之后再做解析。<br>同样很简单的，一个阻塞式消息写入器（一个可以向流中写入消息的模块）也不需要担心只有部分消息被写入，抑或后续还有消息需要写入的情况。</p>
+<h2 id="Blocking-IO-Pipeline-Drawbacks"><a href="#Blocking-IO-Pipeline-Drawbacks" class="headerlink" title="Blocking IO Pipeline Drawbacks"></a>Blocking IO Pipeline Drawbacks</h2><p>一个阻塞式消息读取器是很容易实现的，但是不幸的是，它有一个明显的缺点，那就是必须有一个单独的线程来处理每一个需要分割成消息的流。这么做的原因是每个流的 IO 接口会阻塞线程直到可以读取到数据为止。这也就意味着一个线程阻塞在一个没有数据的流时，没法去读取其他流的数据。一个线程在从一个流中读取数据时，会一直阻塞直到该流中有数据可读。<br>如果这种 IO 管道应用于一个需要处理大并发连接的服务器端，服务器端将需要为每个到来的连接分配一个独立的线程。如果只有几百的并发量到没什么问题。但是，如果并发量高达百万，这种设计并没有良好的伸缩性。每个线程栈都会消耗 320K（32 bit JVM）或者 1024K（64 bit JVM）的内存。因此，1 000 000 个线程将会消耗 1 TB 的内存！并且在处理到来的消息之前服务器也会消耗一些内存（例如，为处理消息过程中使用的对象分配的内存）。<br>为了降低线程的数量，许多服务器使用线程池的来处理到来的消息。到来的连接会被放入一个队列中，然后线程会依次处理这些连接。下图展示了这种设计：<br><img src="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-3.png" alt=""><br>然而这种设计需要服务器端快速响应。如果处理每个连接需要花费很长时间，那么多个连接就会阻塞线程池中的所有线程。这也就意味着服务器会变得响应很慢甚至并不响应。<br>一些服务器通过一个可伸缩的线程池来解决这个问题。例如，如果线程池中的线程被用完，线程池会启用更多的线程来处理负载。但是，请记住，你可以使用的线程数还是有上限的。因此在百万级并发的情况下，这种方式也没有良好的伸缩性。</p>
+<h2 id="Basic-Non-blocking-IO-Pipeline-Design"><a href="#Basic-Non-blocking-IO-Pipeline-Design" class="headerlink" title="Basic Non-blocking IO Pipeline Design"></a>Basic Non-blocking IO Pipeline Design</h2><p>非阻塞式 IO 管道可以使用一个线程来从多个消息流中读取消息。这要求流可以切换到非阻塞模式。当处于非阻塞模式下时，你从一个流中读取数据时，流可以返回 0 或者一些数组。如果流中没有数据可读，那么便返回 0。当流中有数据可读时，便会返回可读取的字节数。<br>为了避免每次都要检测流中是否有数据可读，我们使用 Java NIO 选择器。一个或多个选择器管道可以注册到一个选择器上。当你在调用一个选择器的 <code>select()</code> 或 <code>selectNow()</code> 方法时，它将返回处于有数据可读状态的管道。这种设计如下图：<br><img src="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-4.png" alt=""></p>
+<h2 id="Reading-Partial-Messages"><a href="#Reading-Partial-Messages" class="headerlink" title="Reading Partial Messages"></a>Reading Partial Messages</h2><p>当我们从一个选择器管道中读取出一块数据时，我们并不知道这个数据块是否只是一个消息的一部分或者是超出了一个消息。一个数据块可能包含一部分消息（少于一个消息），一个完整的消息或者超过了一个消息，例如 1.5 个消息或者 2.5 个消息。就如下图所示的那样：<br><img src="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-5.png" alt=""><br>处理这种部分消息有两个难点：</p>
+<ol>
+<li>持续检测一个数据块是否有一个完整的消息</li>
+<li>在只有部分消息的情况下怎么做</li>
+</ol>
+<p>检测完整消息要求消息读取器一直观察数据块中的数据是否包含一个完整的消息。如果数据块包含了一个或者多个完整的消息则可以将这个数据块发送到管道中去处理。观察消息完整性的进程需要一直重复进行，因此这个进程需要尽可能的快。<br>无论何时，一个数据块中有不完整的消息，则这个数据块需要被暂存直到消息剩余的部分也抵达了才可以进行处理。<br>检测消息的完整性和暂存不完整的消息是消息读取器的责任。为了避免不混合多个管道的消息，我们针对每个管道使用一个消息读取器。就像下面这样：<br><img src="http://tutorials.jenkov.com/images/java-nio/non-blocking-server-6.png" alt=""><br>从管道中检索出数据时，与该管道关联的消息读取器会读取数据并将其分割为消息。然后，这些消息就可以被传递给其他需要处理它们的模块。<br>一个消息读取器是协议会在协议中指定。消息读取器需要直到消息的格式。如果服务器端的实现注重可重用性，那么它的消息读取器会来自可配置的消息读取器工厂。</p>
+<h2 id="Storing-Partial-Messages"><a href="#Storing-Partial-Messages" class="headerlink" title="Storing Partial Messages"></a>Storing Partial Messages</h2><p>现在我们已经知道了消息读取器需要暂存消息，然后我们还需要弄清楚暂存消息是怎么实现的。<br>我们需要考虑到两点：</p>
+<ol>
+<li>我们想要复制的消息数据越小越好。因为复制的越多，性能越低。</li>
+<li>我们想要一个完整的消息可以按序存储以便解析。</li>
+</ol>
+<h3 id="A-Buffer-Per-Message-Reader"><a href="#A-Buffer-Per-Message-Reader" class="headerlink" title="A Buffer Per Message Reader"></a>A Buffer Per Message Reader</h3><p>很明显，我们需要使用某种缓冲区来暂存消息。最直接的实现就是在每一个消息读取器中使用一个缓冲区。然而，这个缓冲区该是多大呢？它必须足够大以便可以放下一个消息。因此，一个消息最大是 1 M，那么消息读取器内部的缓冲区就得至少是 1M。<br>当有百万个连接时，为每个连接分配 1M 的内存并不现实。1 000 000 x 1MB 仍然是 1 TB！并且，如果消息最大值是 16MB，或者 128 MB呢？</p>
+<h3 id="Resizable-Buffers"><a href="#Resizable-Buffers" class="headerlink" title="Resizable Buffers"></a>Resizable Buffers</h3><p>另外一个选择就是在每一个消息读取器中使用一个大小可变的缓冲区。一个大小可变的缓冲区刚开始是很小的，如果消息比较大的情况下，则这个缓冲区会自动扩展。使用这种方式，每个连接没必要都使用 1MB 的缓冲区。每个连接仅仅需要消耗可以装载下个消息的大小的缓冲区。<br>实现一个大小可变的缓冲区有多种方法。它们各有优缺点，因此我将在下面依次讨论它们。</p>
+<h3 id="Resize-by-Copy"><a href="#Resize-by-Copy" class="headerlink" title="Resize by Copy"></a>Resize by Copy</h3><p>实现可变大小的缓冲的第一个方法就是起始使用一个小的缓冲区，例如 4KB。如果消息大于 4KB，那么再分配一个较大的缓冲区，例如 8KB，然后把 4KB 中的数据复制到大的缓冲区。<br>这种通过复制实现的大小可变缓冲区的有点在于可以保持每个消息都在一个单独的数组中。这是解析消息变得很容易。缺点就是如果消息过大的话导致大量数据被复制。<br>为了减少数据的复制次数，你可以分析消息的大小来寻找可以减少复制次数的最佳缓冲区大小。例如，你也许会发现大多数的消息都是小于 4KB 的，因为它们仅仅是很小的请求和响应。这也就意味着第一次缓冲区大小应该为 4KB。<br>然后你又发现因为有些请求包含了文件所以它的消息是大于 4KB的，但是确是小于 128KB。然后你就知道第二次缓冲区大小应该为 128KB。<br>最终你又发现有些消息是大于 128KB的，因此你并不能找到固定的数值。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/11/15/Java-NIO-Non-blocking-Server/" data-id="cizru1zfu003i68twdpgfvy7o" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/19/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/15/Java-NIO-ServerSocketChannel/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Java NIO ServerSocketChannel</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

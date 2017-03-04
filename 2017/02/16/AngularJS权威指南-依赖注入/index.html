@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS权威指南-依赖注入 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《AngularJS 权威教程》读书笔记，第十三章——依赖注入。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS权威指南-依赖注入">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/16/AngularJS权威指南-依赖注入/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《AngularJS 权威教程》读书笔记，第十三章——依赖注入。">
+<meta property="og:updated_time" content="2017-02-16T01:53:37.878Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS权威指南-依赖注入">
+<meta name="twitter:description" content="《AngularJS 权威教程》读书笔记，第十三章——依赖注入。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS权威指南-依赖注入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/16/AngularJS权威指南-依赖注入/" class="article-date">
+  <time datetime="2017-02-16T01:00:46.000Z" itemprop="datePublished">2017-02-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS权威指南-依赖注入
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《AngularJS 权威教程》读书笔记，第十三章——依赖注入。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>一个对象通常有三种方式可以获得对其依赖的控制权：</p>
+<ol>
+<li>在内部创建依赖（缺点：手动创建，太麻烦）</li>
+<li>通过全局变量进行引用（缺点：需要创建一大批全局变量，污染全局作用域）</li>
+<li>在需要的地方通过参数进行传递（依赖注入，目前最佳的方式）</li>
+</ol>
+<p>AngularJS 使用 $inject（注入器服务）来管理依赖关系的查询和实例化。事实上，$inject 负责实例化 AngularJS 中所有的组件，包括应用的模块、指令和控制器等。<br>在运行时，任何模块启动时 $inject 都会负责实例化，并将其需要的所有依赖传递进去。<br>当编写控制器时，如果没有使用 [] 标记或进行显示的声明，$injector 就会尝试通过参数名推断依赖关系。</p>
+<h2 id="推断式注入声明"><a href="#推断式注入声明" class="headerlink" title="推断式注入声明"></a>推断式注入声明</h2><p>如果没有明确的声明，AngularJS 会假定参数名称就是依赖的名称。它会在内部调用函数对象的 toString() 方法，分析并提取出函数参数列表，通过 $injector 将这些参数注入进对象实例。示例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp'</span>, [])</div><div class="line">    .controller(<span class="string">'MyController'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope, greeter</span>)</span>&#123;</div><div class="line"></div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<p>所以这个过程只适用于未经压缩和混淆的代码，因为 AngularJS 需要原始未经压缩的参数列表来进行解析，而压缩和混淆为了减少源文件的体积通常会将参数名改写成简单的字符，也会删除空格、空行和注释等。</p>
+<h2 id="显示注入声明"><a href="#显示注入声明" class="headerlink" title="显示注入声明"></a>显示注入声明</h2><p>AngularJS 提供了显示的方法来明确定义一个函数在被调用时需要用到的依赖关系。通过这种方法声明依赖，即使在源代码被压缩、参数名称发生改变的情况下依然能够正常工作。示例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> aControllerFactory = </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">aController</span>(<span class="params">$scope, greeter</span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'LOADED controller'</span>, greeter);  </div><div class="line">&#125;;</div><div class="line"></div><div class="line">aControllerFactory.$inject = [<span class="string">'$scope'</span>, <span class="string">'greeter'</span>];</div><div class="line"></div><div class="line">angular.module(<span class="string">'myApp'</span>, [])</div><div class="line">    .controller(<span class="string">'MyController'</span>, aControllerFactory)</div><div class="line">    .factory(<span class="string">'grreeter'</span>, greeterService);</div></pre></td></tr></table></figure></p>
+<h2 id="行内注入声明"><a href="#行内注入声明" class="headerlink" title="行内注入声明"></a>行内注入声明</h2><p>AngularJS 提供的行内注入声明其实是一种语法糖，它同显示注入声明的原理是一样的，所以行内注入声明也可以在压缩后的代码中正常运行。示例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp'</span>)</div><div class="line">    .controller(<span class="string">'MyController'</span>, [<span class="string">'$scope'</span>, <span class="string">'greeter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope, greeter</span>)</span>&#123;</div><div class="line"></div><div class="line">    &#125;]);</div></pre></td></tr></table></figure></p>
+<h2 id="injector-API"><a href="#injector-API" class="headerlink" title="$injector API"></a>$injector API</h2><ol>
+<li>annotate()：返回值是一个由服务名称组成的数组：用法没看懂</li>
+<li>get()：返回一个服务的实例</li>
+<li>has()：返回一个布尔值，在 $injector 能够从自己的注册列表中找到对应的服务时返回 true，否则返回 false</li>
+<li>instantiate()：instantiate() 方法可以创建某个 JavaScript 类型的实例，它会通过 new 操作符调用构造函数，并将所有参数都传递给构造函数</li>
+<li>invoke()：该方法会调用方法并从 $injector 中添加方法参数</li>
+</ol>
+<h2 id="ngMin"><a href="#ngMin" class="headerlink" title="ngMin"></a>ngMin</h2><p>当我们在写代码时使用了推断式声明依赖的方式的话，ngMin 这个预压缩工具可以将代码转换为行内注入声明的方式。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/16/AngularJS权威指南-依赖注入/" data-id="cizru1z9r000n68twk1elbqrq" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/16/AngularJS权威指南-服务/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS权威指南-服务
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/14/AngularJS权威指南-多重视图和路由/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS权威指南-多重视图和路由</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

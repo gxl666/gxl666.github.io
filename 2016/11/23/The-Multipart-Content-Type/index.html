@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>The Multipart Content-Type | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RFC 1341 -&amp;gt; The Multipart Content-Type 学习笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Multipart Content-Type">
+<meta property="og:url" content="http://gxl666.github.io/2016/11/23/The-Multipart-Content-Type/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="RFC 1341 -&amp;gt; The Multipart Content-Type 学习笔记。">
+<meta property="og:updated_time" content="2016-11-24T13:01:09.098Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Multipart Content-Type">
+<meta name="twitter:description" content="RFC 1341 -&amp;gt; The Multipart Content-Type 学习笔记。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-The-Multipart-Content-Type" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/23/The-Multipart-Content-Type/" class="article-date">
+  <time datetime="2016-11-23T12:50:54.000Z" itemprop="datePublished">2016-11-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/RFC/">RFC</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      The Multipart Content-Type
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RFC 1341 -&gt; <a href="https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html" target="_blank" rel="external">The Multipart Content-Type</a> 学习笔记。<br><a id="more"></a><br>在含有多个“部分消息体”的消息中有一个或多个不同的数据集放在同一个消息体中，并且这个消息头部有一个值为 “multipart” 的 Content-Type 字段。这个消息的消息体由一个或多个“部分消息体”组成，并且这些“部分消息体”会被一个分割线来分离包装，并且最后一个“部分消息体”后面会有一个结束分割线来表示消息体的结束。每个“部分消息体”从一个分割线开始，然后是包含了头部区域，一个空白行，“部分消息体”的体部部分。因此这里我们所说的“部分消息体”和 RFC 822 中提到的消息在语法上是相同的，但是在含义上确实是不同的。<br>“部分消息体”现在不会再在 RFC 822 消息的定义中解释了。实际上，“部分消息体”起始部分不需要头部区域。因此，“部分消息体”允许从一个空白行开始，并且拥有默认值。当消息头中没有 Content-Type 字段时，说明消息体中的内容就是普通的 US-ASCII 文本（应该就是普通的文本文件吧，只是字符编码是 US-ASCII）。消息头中只有以 “Content-” 的字段是用来定义消息体中内容格式的。其他所有的字段在消息体中一般都会被忽略。尽管那些字段（即不是以 “Content-” 开头的字段）理应被邮件处理程序保留，但实际上它们更可能被网关，路由丢弃。因此，那些不是以 “Content-” 开头的字段虽然允许出现在消息体中，但是我们并不能指望着它们可以起到应有的作用。有时候，我们在实验性项目或者私有协议中会使用 “X-” 开头的字段，但是请记住：这些扩展字段是有可能被网关或者路由丢弃的。<br>“部分消息体”和 RFC 822 中定义的消息的区别是很小的，但是确实极其重要的。例如在 Internet mail 和 X.400 mail(至于什么是 X.400 mail，可以参考：<a href="https://en.wikipedia.org/wiki/X.400" target="_blank" rel="external">https://en.wikipedia.org/wiki/X.400</a>。大意就是说：早期邮件规范是用的 X.400 mail，后来被基于 SMTP 协议的 Internet mail 替代了)中，必须得区分一个拥有一张图片的“部分消息体”和一个封装了一张图片的“部分消息体”。为了表示后者，封装了一张图片的“部分消息体”一定要有一个“Content-Type：message”，并且它的体部（即空白行后面的内容）一定是一个包装了的消息，即拥有自己的头部字段“Content-Type：image”。使用相似的语法有利于消息和“部分消息体”之间的转变，但是，这两者之间一定要有一定的差别。（想象下：有时候所有的“部分消息体”都是一个消息，并且它们都定义了“digest”子类型。）<br>正如前面所说的，每个“部分消息体”前面都会有一个分割线，并且这个分割线的内容决不能出现在“部分消息体”里面。因此邮件代理（即我们常用的邮件客户端啦）必须指定一个独有的分割线来分割多个“部分消息体”。<br>所有的“multipart”的子类型必须得使用相同的语法。子类型可以有不同的语义，也可以有其额外的限制，但是其本身必须得遵循“multipart”所要求的语法。这也就确保了常规的邮件代理在不能识别子类型的情况下也可以识别消息体里的多个“部分消息体”。<br>正如我们在 Content-Transfer-Encoding 中定义的一样，“multipart”定义的实体内容只能使用“7 bit”，“8 bit”或者“binary”这三类编码。“部分消息体”分隔符和头部字段都是使用 7-bit ASCII 编码的，并且“部分消息体”的体部部分使用自身指定的 Content-Transfer-Encoding 字段的值来进行逐项编码。<br>邮件网关，中转服务器和处理邮件的邮件代理，都是可以对 RFC 822 消息中定义的头部字段进行任意的修改操作，例如：增加一个首部字段，删除一个首部字段，或者调整首部字段之间的前后顺序。但是，“部分消息体”中的头部字段是禁止修改的。</p>
+<h2 id="Multipart-The-common-syntax"><a href="#Multipart-The-common-syntax" class="headerlink" title="Multipart: The common syntax"></a>Multipart: The common syntax</h2><p>“multipart”的所有子类型都使用本章定义的同一种语法。并且本章会给出一个简单的例子。附录 C 中将会给出更为复杂的多部分消息的例子。<br>对于多部分实体消息的Content-Type 需要有一个名为“boundary”的参数，用来指定包装“部分消息体”的分割线。包装“部分消息体”的分割线的内容是两个破折号后面接着Content-Type中“bounda”参数定义的值。<br>请注意：这种使用破折号前缀的语法是为了兼容 RFC 943 中定义的消息分割方式，以及其他的一些实现。然而，请记住多部分消息的包装语法并不完全兼容 RFC 934 中定义的包装语法；特别是，多部分消息的包装语法并不遵循 RFC 943 中以破折号开始的引用嵌入行语法。RFC 943 之所以使用这种语法是因为随着每级引用的增加，行数也会大量增加。SMTP 基于 RFC 943 这种机制实现在数据结构深层嵌套时造成包含了很长的空行。<br>因此，一个普通的 Content-Type 字段的内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Content-Type: multipart/mixed; </div><div class="line">  boundary=gc0p4Jq0M2Yt08jU534c0p</div></pre></td></tr></table></figure></p>
+<p>这是这个字段表示消息实体会包含多个“部分消息体”，并且每个“部分消息体”的结构和 RFC 822 中定义的消息的格式相似，即头部区域为空，并且每个“部分消息体”前面都有一行用于包装的分割线：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">--gc0p4Jq0M2Yt08jU534c0p</div></pre></td></tr></table></figure></p>
+<p>请注意：这个分割线必须位于一行起始的位置，并且它的前面必须是一个回车换行，这个回车换行也是分割线的一部分。分割线后面又紧接着表示一个新的“部分消息体”起始部分的另一个回车换行，如果下面这个新的“部分消息体”的头部区域为空的话，分割线后面将连接接着两个回车换行（这种情况下，我们假定省略了的头部区域内容为 Content-Type text/plain）。</p>
+<h2 id="词典"><a href="#词典" class="headerlink" title="词典"></a>词典</h2><p>encapsulation,封装，包装<br>interpreted,解释<br>distinction,区别，差别<br>subtle,微妙的，精细的<br>facilitate,促进，帮助<br>crucial,重要的<br>semantic,语义学<br>restrictions,限制，限制条件<br>conversion,转换<br>identical,完全相同的<br>conform,符合，遵循<br>appropriate,适当的<br>relay,中继器<br>alteration,改变，变更<br>explicitly,明确的<br>appendix,附录<br>convention,约定，习俗</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/11/23/The-Multipart-Content-Type/" data-id="cizru1zmy009o68twvfu6tgsf" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RFC/">RFC</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/14/起步-Pro-Git/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          起步(Pro Git)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/19/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

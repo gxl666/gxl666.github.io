@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RFC792-ICMP | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RFC 全英文文档，看两分钟会睡着的，只能自己用汉字组织一遍了。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RFC792-ICMP">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/26/RFC792-ICMP/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="RFC 全英文文档，看两分钟会睡着的，只能自己用汉字组织一遍了。。。">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd42s2tldkj30kk05xgmf.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd42sswtm7j30kc05ygmg.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd433wbvhfj30kj05rjs2.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd43ev73w7j30kg07wgmr.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd43keo5tfj30kn04ot9a.jpg">
+<meta property="og:updated_time" content="2017-02-26T11:41:42.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RFC792-ICMP">
+<meta name="twitter:description" content="RFC 全英文文档，看两分钟会睡着的，只能自己用汉字组织一遍了。。。">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-RFC792-ICMP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/26/RFC792-ICMP/" class="article-date">
+  <time datetime="2017-02-26T09:10:42.000Z" itemprop="datePublished">2017-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/RFC/">RFC</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RFC792-ICMP
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RFC 全英文文档，看两分钟会睡着的，只能自己用汉字组织一遍了。。。<br><a id="more"></a></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>网际协议（即 IP 协议）是一个用于在同一网络中端到端（即一个计算机到另一个计算机）之间的传递数据报协议。网络中的连接设备我们称之为网关（这里说的网关就是交换机、路由器等的统称）。为了对网络进行控制，这些网关之间会通过 GGP 协议（即 Gateway to Gateway Protocol）进行交流。有时候，一个网关或者目的主机需要与源主机通信，例如，向源主机报告数据报处理过程中发生的错误。这时候就得需要用到了我们正要说的网际消息控制协议（即 ICMP，Internet Control Message Protocol）了。ICMP 协议尽管是比 IP 协议更高一层的协议，但是它使用了基本的 IP 协议的形式，因此 ICMP 通常被当做 IP 协议的一部分，并且每个 IP 模块都得实现 ICMP 协议。<br>一般出现以下几种情况时会用到 ICMP 消息：</p>
+<ol>
+<li>一个数据报不能抵达它的目的地;</li>
+<li>一个网关没有足够的容量来运送数据报；</li>
+<li>一个网关有更短的路由来发送数据报；</li>
+</ol>
+<p>IP 协议是一种不可靠协议。所以 ICMP 这种控制协议被设计出来的目的就是在使用 IP 协议通信出现问题时提供反馈，但仍然不能让 IP 变得可靠。我们并不能保证一个数据报一定会送到目的主机或者一个控制消息一定会被返回。一些数据报可能在没有任何丢失报告的情况下丢失。如果想要实现可靠性通信，基于 IP 协议的高层协议必须自己设定可靠性规则。<br>ICMP 消息一般在处理数据报出错时用来报告错误。为了避免无限的发送 ICMP 消息，比如：对于 ICMP 消息自身没有被发送到目的地。所以 ICMP 消息仅仅用来发送在处理数据报帧中的第 0 帧（实际上就是第一帧的意思，这里说 0 是指第一帧的偏移量为 0）时发生的错误。</p>
+<h2 id="消息格式"><a href="#消息格式" class="headerlink" title="消息格式"></a>消息格式</h2><p>ICMP 消息使用了 IP 协议的头部。数据部分的第一个字节表示 ICMP 消息的类型，而 ICMP 消息的类型决定了剩余数据的格式。任何带有“未使用”标记的字段都是目前保留字段以便日后扩展，这些字段在实际的消息中被设置为零，消息接收者并不需要处理这些字段（比如在校验和的过程中包括它们）。除非有特别说明，ICMP 消息的头部字段的值应该像下面这样：</p>
+<table>
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Field Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>4</td>
+</tr>
+<tr>
+<td>IHL</td>
+<td>消息头的长度（单位是 32 位字）</td>
+</tr>
+<tr>
+<td>服务类型</td>
+<td>0</td>
+</tr>
+<tr>
+<td>总长度</td>
+<td>整个消息的长度（单位是字节）</td>
+</tr>
+<tr>
+<td>Identification</td>
+<td>与数据报的帧有关，见 IP 协议</td>
+</tr>
+<tr>
+<td>Flags</td>
+<td>与数据报的帧有关，见 IP 协议</td>
+</tr>
+<tr>
+<td>Fragment Offset</td>
+<td>与数据报的帧有关，见 IP 协议</td>
+</tr>
+<tr>
+<td>Time to Live</td>
+<td>早期定义的是消息在网络上存活的秒数；实际使用中它在网关之间逐跳递减，因此这个值应该至少等于该消息需要穿过的网关数</td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>ICMP = 1</td>
+</tr>
+<tr>
+<td>头部校验和</td>
+<td>对头部数据计算得出的 16 位的校验和。对头部数据计算校验和时，校验和字段应该为零。这种校验和算法在将来可能会被替换掉</td>
+</tr>
+<tr>
+<td>源地址</td>
+<td>发送 ICMP 消息的网关或者主机的 IP 地址。如无特殊说明，该字段可以是任何网关的地址</td>
+</tr>
+<tr>
+<td>目的地址</td>
+<td>接收 ICMP 消息的网关或者主机的 IP 地址</td>
+</tr>
+</tbody>
+</table>
+<h2 id="目的地不可达消息"><a href="#目的地不可达消息" class="headerlink" title="目的地不可达消息"></a>目的地不可达消息</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg" alt="目的地不可达消息"><br>字段解释：</p>
+<ol>
+<li>Type: 3（至于为啥是三？因为协议规定是三你就得用三）</li>
+<li>Code:<ul>
+<li>0: net unreachable</li>
+<li>1: host unreachable</li>
+<li>2: protocol unreachable</li>
+<li>3: port unreachable</li>
+<li>4: fragmentation needed and DF set</li>
+<li>5: source route failed</li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Internet Header + 64 bits of Data Datagram：尼玛，这个字段没看懂是干啥的，，</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>如果根据网关路由表查询后的结果是该消息的目的地不可达（比如到达目的地的距离无限远），那么该网关可能就会发送一个目的地不可达消息给源主机。另外，一些网络里，网关可以决定某些目的地是否是不可达。</li>
+<li>目的主机如果由于指定的协议模块或者端口未激活而不能运送这个数据报，那么目的主机就可能会发送一个不可达消息到源主机。</li>
+<li>其他的情况还有，比如某一个网关缓存容量较小，必须会数据报分帧才能运送数据报，然而该数据报设置了禁止分帧标志位。那么该网关可能会丢弃该数据报，并返回一个目的地不可达的消息。</li>
+<li>code 0，1，4，5 可能从一个网关发出。code 2 和 3 可能从一个主机发出。</li>
+</ol>
+<h2 id="超时消息"><a href="#超时消息" class="headerlink" title="超时消息"></a>超时消息</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg" alt="超时消息"><br>字段解释：</p>
+<ol>
+<li>Type: 11</li>
+<li>Code:<ul>
+<li>0: time to live exceeded in transit</li>
+<li>1: fragment reassembly time exceeded</li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Internet Header + 64 bits of Data Datagram：尼玛，这个字段没看懂是干啥的，，</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>如果一个网关在处理某个数据报时发现该数据报的 TTL（Time to Live）字段为零，那么它必须丢弃该数据报。这个网关也许会通过发送超时消息来通知源主机。</li>
+<li>如果目的主机重新组装数据报的各个分帧时由于缺少某些帧而不能在限定时间内完成组装，那么它将会丢弃这个数据报，并且它可能会发送一个超时消息到源主机。</li>
+<li>如果零帧不可用，那么也不必再发送超时消息了。</li>
+<li>code 0 可能从一个网关发出。code 1 可能从一个主机发出。</li>
+</ol>
+<h2 id="参数问题消息"><a href="#参数问题消息" class="headerlink" title="参数问题消息"></a>参数问题消息</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd42s2tldkj30kk05xgmf.jpg" alt="参数问题消息"><br>字段解释：</p>
+<ol>
+<li>Type: 12</li>
+<li>Code:<ul>
+<li>0: pointer indicates the error</li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Internet Header + 64 bits of Data Datagram：尼玛，这个字段没看懂是干啥的，，</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>如果一个网关或者主机在处理一个数据报时发现一个头部参数错误以致其不能完成头部完整性处理，那么它必须丢弃该数据报。对于这种问题，一个可能的原因就是该数据报的头部可选项中设置了错误的参数。该网关或主机可能会发送参数问题消息到源主机。参数问题消息只有这种错误导致数据报被丢弃时发送。</li>
+<li>在错误被检测出来的地方，指针会指明原始数据报头部的八位字节组。例如，1 表示服务类型字段有错，20 表示第一个可选项的类型码有误。</li>
+<li>code 0 可能从一个网关发出，也可能从一个主机发出。</li>
+</ol>
+<h2 id="源端熄火消息"><a href="#源端熄火消息" class="headerlink" title="源端熄火消息"></a>源端熄火消息</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd3zo9kuhvj30l7066gmf.jpg" alt="源端熄火消息"><br>字段解释：</p>
+<ol>
+<li>Type: 4</li>
+<li>Code:<ul>
+<li>0</li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Internet Header + 64 bits of Data Datagram：尼玛，这个字段没看懂是干啥的，，</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>如果一个网关没有足够的缓冲区空间来存放某个数据报时，那么这个网关可能就会丢弃这个数据报。如果网关丢弃了这个数据报，那么它可能会向源端发送一个源端熄火消息以通知源端主机降低发送数据报的速度。如果数据报被运送到目的主机的速度过快以致目的主机不能处理掉该数据报，那么目的主机可能会向源端发送一个源端熄火消息以通知源端主机降低发送数据报的速度。网关也许会对它丢弃的每一个数据报都发送一个相应的源端熄火消息。当收到一个源端熄火消息后，源主机应该降低其向特定目的地发送数据报的速度直到它不再收到源端熄火消息。然后源主机可以逐渐增加发送数据报的速度直到它再次接收到源端熄火消息。</li>
+<li>网关或者主机也许会在用完其缓冲区容量之前向源端发送源端熄火消息，而不是当缓冲区容量已经超出了才发送这个消息。这也就意味着触发了源端熄火消息的数据报可能被正确运送了。</li>
+<li>code 0 可能从一个网关发出，也可能从一个主机发出。</li>
+</ol>
+<h2 id="重定向消息"><a href="#重定向消息" class="headerlink" title="重定向消息"></a>重定向消息</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd42sswtm7j30kc05ygmg.jpg" alt="重定向消息"><br>字段解释：</p>
+<ol>
+<li>Type: 5</li>
+<li>Code:<ul>
+<li>0: Redirect datagrams for the Network</li>
+<li>1: Redirect datagrams for the Host</li>
+<li>2: Redirect datagrams for the Type of Service and Netword</li>
+<li>3: Redirect datagrams for the Type of Service and Host</li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Gateway Internet Address：指定了原始数据报需要发往的目的网关地址</li>
+<li>Internet Header + 64 bits of Data Datagram：尼玛，这个字段没看懂是干啥的，，</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>当某个要发送网络 X 的数据报到达网关 G1 时，网关 G1 发现自己需要先把数据报发送到位于网络 X 上的网关 G2，这时网关 G1 就会通知源主机直接把数据报发送到网关 G2，因为那才是较短路由。</li>
+<li>如果数据报指定了 IP 源路由选项和目的地址的网关地址，那么即使有更短的路由，也不会有网关发送重定向消息的。</li>
+<li>code 0，1，2，3 可能从一个网关发出。</li>
+</ol>
+<h2 id="Echo-or-Echo-Reply-Message"><a href="#Echo-or-Echo-Reply-Message" class="headerlink" title="Echo or Echo Reply Message"></a>Echo or Echo Reply Message</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd433wbvhfj30kj05rjs2.jpg" alt="Echo or Echo Reply Message"><br>字段解释：</p>
+<ol>
+<li>Type: <ul>
+<li>0：for echo reply message</li>
+<li>8：for echo message</li>
+</ul>
+</li>
+<li>Code:<ul>
+<li>0: </li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Identifier：如果 code 的值是零，那么这个字段就用来匹配 echo 或者 reply，一般也直接设置为 0</li>
+<li>Sequence Number：如果 code 的值是零，那么这个字段就用来匹配 echo 或者 reply，一般也直接设置为 0</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>在 echo 消息中接收到的数据必须在 reply 消息中返回</li>
+<li>Identifier 和 Sequence Number 字段可以用来做一些标志位。比如：将 Identifier 的值设置为 TCP 或者 UDP 的端口号来维持一个会话，Sequence Number 在每个 echo 消息中递增，用来表示发送消息的次数。</li>
+<li>code 0 可能从一个网关发出，也可能从一个主机发出</li>
+</ol>
+<h2 id="Timestamp-or-Timestamp-Reply-Message"><a href="#Timestamp-or-Timestamp-Reply-Message" class="headerlink" title="Timestamp or Timestamp Reply Message"></a>Timestamp or Timestamp Reply Message</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd43ev73w7j30kg07wgmr.jpg" alt="Timestamp or Timestamp Reply Message"><br>字段解释：</p>
+<ol>
+<li>Type: <ul>
+<li>13：for timestamp message</li>
+<li>14：for timestamp reply message</li>
+</ul>
+</li>
+<li>Code:<ul>
+<li>0: </li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Identifier：如果 code 的值是零，那么这个字段就用来匹配 timestamp 或者 replies，一般也直接设置为 0</li>
+<li>Sequence Number：如果 code 的值是零，那么这个字段就用来匹配 timestamp 或者 replies，一般也直接设置为 0</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>在 echo 消息中接收到的数据必须在 reply 消息中返回</li>
+<li>Identifier 和 Sequence Number 字段可以用来做一些标志位。比如：将 Identifier 的值设置为 TCP 或者 UDP 的端口号来维持一个会话，Sequence Number 在每个 echo 消息中递增，用来表示发送消息的次数。</li>
+<li>code 0 可能从一个网关发出，也可能从一个主机发出</li>
+</ol>
+<h2 id="Information-Request-or-Information-Reply-Message"><a href="#Information-Request-or-Information-Reply-Message" class="headerlink" title="Information Request or Information Reply Message"></a>Information Request or Information Reply Message</h2><p>消息格式如图：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fd43keo5tfj30kn04ot9a.jpg" alt="Information Request or Information Reply Message"><br>字段解释：</p>
+<ol>
+<li>Type: <ul>
+<li>15：for information request message</li>
+<li>16：for information reply message</li>
+</ul>
+</li>
+<li>Code:<ul>
+<li>0: </li>
+</ul>
+</li>
+<li>Checksum: 校验和是用于消息完整性校验的。计算校验和时，校验和字段置为零。这个字段将来可能会发生改变。</li>
+<li>Identifier：如果 code 的值是零，那么这个字段就用来匹配 timestamp 或者 replies，一般也直接设置为 0</li>
+<li>Sequence Number：如果 code 的值是零，那么这个字段就用来匹配 timestamp 或者 replies，一般也直接设置为 0</li>
+</ol>
+<p>细节描述：</p>
+<ol>
+<li>当数据报的 IP 头部中的源地址和目的地址字段的值都为零的时候，这种消息会被发送。因此对于一个主机来说这种消息是搞明白自身所处网络号的方法。</li>
+<li>Identifier 和 Sequence Number 字段可以用来做一些标志位。比如：将 Identifier 的值设置为 TCP 或者 UDP 的端口号来维持一个会话，Sequence Number 在每个 echo 消息中递增，用来表示发送消息的次数。</li>
+<li>code 0 可能从一个网关发出，也可能从一个主机发出</li>
+</ol>
+<h2 id="Summary-of-Message-Types"><a href="#Summary-of-Message-Types" class="headerlink" title="Summary of Message Types"></a>Summary of Message Types</h2><ol>
+<li>0: Echo Reply</li>
+<li>3: Destination Unreachable</li>
+<li>4: Source Quench</li>
+<li>5: Redirect</li>
+<li>8: Echo</li>
+<li>11: Time Exceeded</li>
+<li>12: Parameter Problem</li>
+<li>13: Timestamp</li>
+<li>14: Timestamp Reply</li>
+<li>15: Information Request</li>
+<li>16: Information Reply</li>
+</ol>
+<h2 id="生词学习"><a href="#生词学习" class="headerlink" title="生词学习"></a>生词学习</h2><ol>
+<li>obsolete：废弃</li>
+<li>datagram：数据报</li>
+<li>catenet：互联网，大型网络</li>
+<li>occasionally：偶尔</li>
+<li>integral：部分，整体</li>
+<li>forward：向前，运送</li>
+<li>octet：八位位组，八字节</li>
+<li>portion：部分</li>
+<li>appropriate：适当的，恰当的</li>
+<li>indicated：表明的，显示</li>
+<li>exceed：超过，胜过</li>
+<li>transit：运输，经过</li>
+<li>potential：潜在的</li>
+<li>identify：识别，辨认</li>
+<li>quench：熄灭，平息</li>
+<li>ultimate：最终的，极限的，根本的</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/26/RFC792-ICMP/" data-id="cizru1zmm009d68tw8pgw50yi" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RFC/">RFC</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/28/初识-Sonar/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          初识 Sonar
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Java NIO-AsynchronousFileChannel</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

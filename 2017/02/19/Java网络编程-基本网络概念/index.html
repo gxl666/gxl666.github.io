@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java网络编程-基本网络概念 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《Java网络编程》读书笔记，第一章——基本网络概念。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java网络编程-基本网络概念">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/19/Java网络编程-基本网络概念/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《Java网络编程》读书笔记，第一章——基本网络概念。">
+<meta property="og:updated_time" content="2017-02-19T03:13:39.398Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java网络编程-基本网络概念">
+<meta name="twitter:description" content="《Java网络编程》读书笔记，第一章——基本网络概念。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java网络编程-基本网络概念" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/19/Java网络编程-基本网络概念/" class="article-date">
+  <time datetime="2017-02-19T02:24:28.000Z" itemprop="datePublished">2017-02-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java网络编程/">Java网络编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java网络编程-基本网络概念
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《Java网络编程》读书笔记，第一章——基本网络概念。<br><a id="more"></a></p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><ol>
+<li>目前流行的网络传输数据的物理媒介有无线电波、光钎电缆等，但是，从理论上讲：数据甚至可以通过碳驱动的计算机发送烟信号来相互传输（这种网络的响应时间（和对环境的影响）可能很差）</li>
+<li>字节序有：big endian、little endian</li>
+<li>现代计算机网络都是包交换（即分组交换）网络：流经网络的数据分割成小块，成为包（packet，也称分组），每个包都单独加以处理。其优点：①线路复用②分包校验，检测包中数据的完整性</li>
+</ol>
+<h3 id="网际层"><a href="#网际层" class="headerlink" title="网际层"></a>网际层</h3><ol>
+<li>IPv4 使用 32 位地址，IPv6 使用 128 位地址</li>
+</ol>
+<h2 id="IP-TCP-UDP"><a href="#IP-TCP-UDP" class="headerlink" title="IP, TCP, UDP"></a>IP, TCP, UDP</h2><ol>
+<li>Java 不支持 ICMP，也不允许发送原始 IP 数据报（而只允许发送 TCP 片或 UDP 数据报）。Java 支持的协议只有 TCP 和 UDP，以及建立在 TCP 和 UDP 之上的应用层协议。所有其他传输层、网际层和更底层的协议，如 ICMP、IGMP、ARP、RARP、RSVP 和其他协议在 Java 程序中只能通过链接到原生代码来实现。</li>
+<li>以 10., 172.16., 172.31. 和 192.168. 开头的所有 IPv4 地址都未分配，这些地址可以在内部网络中使用。</li>
+<li>4 字节都使用相同数字的 IPv4 地址（如 255.255.255.255）是一个广播地址</li>
+</ol>
+<h2 id="两个好玩一点的协议"><a href="#两个好玩一点的协议" class="headerlink" title="两个好玩一点的协议"></a>两个好玩一点的协议</h2><p>echo、discard 这些无聊的协议就不说了。。。</p>
+<ol>
+<li>whois，端口号：43，基于 TCP 协议，用于 Internet 网络管理的简单目录服务</li>
+<li>finger，端口号：79，基于 TCP 协议，返回本地系统中用户（或多个用户）有关信息的服务</li>
+</ol>
+<h2 id="子网的一些简单概念"><a href="#子网的一些简单概念" class="headerlink" title="子网的一些简单概念"></a>子网的一些简单概念</h2><ol>
+<li>一种表示方法：一个子网的前缀是 216.254.85，那么本地网络可以使用从 216.254.85.0 到 216.254.85.255 的地址，固定了前 24 位，所以写作 216.254.85.0/24。不过，这个子网中最低地址用于标识网络本身，最高地址是这个网络的一个广播地址，所以比你预想的要少两个地址。</li>
+</ol>
+<h2 id="网络地址转换"><a href="#网络地址转换" class="headerlink" title="网络地址转换"></a>网络地址转换</h2><p>网络地址转换，即 Network Address Translation，缩写为 NAT，协议文档为 RFC 1632，可以让一个子网中的多个主机公用一个公网 IP 地址也可以自由上网的牛逼协议，有空了可以看看。。。</p>
+<h2 id="防火墙和代理服务器"><a href="#防火墙和代理服务器" class="headerlink" title="防火墙和代理服务器"></a>防火墙和代理服务器</h2><p>防火墙一般工作于传输层或网际层，而代理服务器通常工作于应用层。<br>一个值得注意的例外是 SOCKS 代理服务器，它工作于传输层，可以代理所有 TCP 和 UDP 连接，而不用考虑应用层协议。<br>SOCKS：防火墙安全会话转换协议，protocol for sessions traversal across firewall securely，工作在会话层，RFC 1928<br>gopher：RFC 1436，是 Internet 上一个非常有名的信息查找系统，在 www 出现后它就 GG 了</p>
+<h2 id="Internet-标准"><a href="#Internet-标准" class="headerlink" title="Internet 标准"></a>Internet 标准</h2><p>Internet 标准由两个组织制定：</p>
+<ol>
+<li>IETF（Internet Engineering Task Force，Internet 工程任务组），一个不太正式的民间团体，向所有感兴趣参与的团队开放。制定的标准有：TCP/IP、MIME 和 SMTP 等</li>
+<li>W3C（World Wide Web Consortium，国际互联网协会），由厂商组成，由缴纳会费的成员公司控制，明确拒绝个人参与。制定的标准有：HTTP、HTML 和 XML 等。W3C 的成员每年的会费为 50 000 美元，每项标准最终由一个人批准或否决，那就是 W3C 的霸道总裁同时也是有万维网之父之称的 Tim Berners-Lee。</li>
+</ol>
+<h2 id="记录几个自己将要学习的协议"><a href="#记录几个自己将要学习的协议" class="headerlink" title="记录几个自己将要学习的协议"></a>记录几个自己将要学习的协议</h2><ol>
+<li>RFC 792：ICMP，Internet 控制消息协议，最常见的用法是 ping 和 traceroute</li>
+<li>RFC 822：电子邮件消息格式，ASCII 文本邮件的基本语法（后面还有 MIME 来扩展这个格式，以支持二进制语法）</li>
+<li>RFC 1288：Finger 协议，应用层协议，请求远程网站上一个用户的信息，可能有安全风险</li>
+<li>RFC 1945：HTTP 1.0</li>
+<li>RFC 2616：HTTP 1.1</li>
+<li>RFC 2045，2046，2047：MIME，多用途 Internet 邮件扩展</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/19/Java网络编程-基本网络概念/" data-id="cizru1zia005468twqaijkqji" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/19/Java网络编程-流/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Java网络编程-流
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/19/2017书单/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">2017书单</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

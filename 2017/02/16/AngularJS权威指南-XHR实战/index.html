@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS权威指南-XHR实战 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《AngularJS 权威教程》读书笔记，第十六章——XHR实践。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS权威指南-XHR实战">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/16/AngularJS权威指南-XHR实战/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《AngularJS 权威教程》读书笔记，第十六章——XHR实践。">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fct8bggq8jj30uh0qaaek.jpg">
+<meta property="og:updated_time" content="2017-02-17T03:39:46.789Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS权威指南-XHR实战">
+<meta name="twitter:description" content="《AngularJS 权威教程》读书笔记，第十六章——XHR实践。">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/006zuwa2gy1fct8bggq8jj30uh0qaaek.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS权威指南-XHR实战" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/16/AngularJS权威指南-XHR实战/" class="article-date">
+  <time datetime="2017-02-16T10:17:55.000Z" itemprop="datePublished">2017-02-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS权威指南-XHR实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《AngularJS 权威教程》读书笔记，第十六章——XHR实践。<br><a id="more"></a></p>
+<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><blockquote>
+<p>同源策略允许页面从同一个站点加载和执行特定的脚本。<br>浏览器全面禁止了页面加载或执行与自身来源不同的域的任何脚本。</p>
+</blockquote>
+<p>感觉这里说的两句话是大错特错的，浏览器只是对 XHR 异步请求有同源策略的限制吧！iframe, script, img，这些标签还不是可以虽然加载域外资源，jsonp 不也是利用了这一点嘛！难道是翻译这本书的人水平太渣。。。<br>实现跨域请求的三种方式：</p>
+<ol>
+<li>JSONP</li>
+<li>CORS</li>
+<li>服务器代理</li>
+</ol>
+<h2 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h2><p>JSONP，名字来源：P 代表“填充”或“前缀”。假如在服务器上启用了 CORS（从这里可以看出 CORS 应该是：扩展了 HTTP 请求头实现的，也就说了改进了 HTTP 协议，而新的浏览器才会跟进这些新的改变），在新的浏览器下，跨域文档也可以通过 XMLHttpRequest 享受该服务。在不支持 CORS 的旧浏览器，跨域文档只能通过<code>&lt;script&gt;</code>元素访问服务：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getJSONP</span>(<span class="params">url, callback</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> cbnum = <span class="string">'cb'</span> + getJSONP.counter++; <span class="comment">// 每次自增计数器</span></div><div class="line">    <span class="keyword">var</span> cbname = <span class="string">'getJSONP.'</span> + cbnum; <span class="comment">// 作为 JSONP 函数的属性</span></div><div class="line"></div><div class="line">    <span class="comment">// 将回调函数名称以表单编码的形式添加到 URL 的查询部分中</span></div><div class="line">    <span class="keyword">if</span>(url.indexOf(<span class="string">'?'</span>) === <span class="number">-1</span>)&#123;</div><div class="line">        url += <span class="string">'?jsonp='</span> + cbname;</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        url += <span class="string">'&amp;jsonp='</span> + cbname;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</div><div class="line"></div><div class="line">    getJSONP[cbnum] = <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</div><div class="line">        <span class="keyword">try</span>&#123;</div><div class="line">            callback(response);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">finally</span>&#123;</div><div class="line">            <span class="keyword">delete</span> getJSONP[cbnum];</div><div class="line">            script.parentNode.removeChild(script);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    script.src = url;</div><div class="line">    <span class="built_in">document</span>.body.appendChild(script);</div><div class="line">&#125;</div><div class="line">getJSONP.counter = <span class="number">0</span>;</div></pre></td></tr></table></figure></p>
+<p>至于 JSONP 请求的的响应状态码，响应头信息怎么来呢？使用<code>&lt;script&gt;</code>标签就是相当于利用浏览器自身的网络请求功能请求数据，而我们的 js 是读取不到这种网络请求的响应信息的，所以一般服务器返回 JSONP 响应时会包含一个<code>meta</code> 对象来表示响应头信息。无图无真相：<br><img src="https://ww2.sinaimg.cn/large/006zuwa2gy1fct8bggq8jj30uh0qaaek.jpg" alt="JSONP 响应"></p>
+<h2 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h2><p>近年来，W3C 指定了跨域资源共享来通过标准的方式取代 JSONP。<br>CORS 规范简单地扩展了标准的 XHR 对象，以允许 JavaScript 发送跨域的 XHR 请求。它会通过遇检查（preflight）来确认是否有权限向目标服务器发送请求。<br>W3C 指定 CORS 规范时对很多细节进行了抽象，并使其对客户端开发者透明，让开发者可以像发送同域请求一样方便地发送跨域请求。</p>
+<h3 id="AngularJS客户端设置"><a href="#AngularJS客户端设置" class="headerlink" title="AngularJS客户端设置"></a>AngularJS客户端设置</h3><p>为了在 AngularJS 中使用 CORS，首先需要告诉 AngularJS 我们正在使用 CORS，使用 config 方法在应用模块上设置两个参数以达到此目的。<br>首先，告诉 AngularJS 使用 XDomain，并从所有的请求中把 X-Request-With 头移出掉（X-Request-With 头默认就是移出掉的，但是再次确认没有坏处），为啥这么操作就是发送 CORS 请求了呢？我也不知道，应该是 AngularJS 的一种约定吧！<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp'</span>, [])</div><div class="line">    .config(<span class="function"><span class="keyword">function</span>(<span class="params">$httpProvider</span>)</span>&#123;</div><div class="line">        $httpProvider.defaults.useXDomain = <span class="literal">true</span>;</div><div class="line">        <span class="keyword">delete</span> $httpProvider.defaults.headers.common[<span class="string">'X-Requested-With'</span>];</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="服务器端CORS支持"><a href="#服务器端CORS支持" class="headerlink" title="服务器端CORS支持"></a>服务器端CORS支持</h3><p>后端服务器必须支持 HTTP 协议的 OPTIONS 方法。<br>后端服务器响应中 CORS 相关的响应头：</p>
+<ol>
+<li>Access-Control-Allow-Origin：* 表示会接收从任何来源发来的请求</li>
+<li>Acceess-Control-Allow-Credentials：默认情况下 CORS 请求不会发送 cookie。如果服务器返回了这个头，那么就可以通过 withCredentials 设置为 true 来将 cookie 同请求一起发送出去（如果将 $http 发送的请求中的 withCredentials 设置为 true，但服务器没有返回 Access-Control-Allow-Credentials，请求就会失败，反之亦然）。</li>
+</ol>
+<p>CORS 请求分为简单和非简单两种类型。</p>
+<h3 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h3><p>啥是简单请求：</p>
+<ol>
+<li>HTTP 请求方法是这三种的某一种：HEAD、GET、POST</li>
+<li>HTTP 请求头只有以下的一种或几种：Accept、Accept-Language、Content-Language、Last-Event-ID、Content-Type（application/x-www-form-urlencoded, multipart/form-data, text/plain）</li>
+</ol>
+<p>对于简单请求，浏览器可以不需要使用 CORS 就发送这类请求。简单请求不要求浏览器和服务器之间有任何的特殊通信。</p>
+<h3 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h3><p>啥事非简单请求呢？不是简单请求的都是非简单请求。<br>对于非简单请求，尽管在客户端开发者看来没有什么不同，但浏览器会以不同的方式处理它们。浏览器实际上会发送两个请求：预请求和请求。浏览器首先向服务器发送预请求来获得发送请求的许可，只有许可通过了，浏览器才会发送真正的请求。浏览器处理 CORS 的过程是透明的，同简单请求一样，浏览器会给预请求和请求都加上 Origin 头。<br>预请求过程中的请求：</p>
+<ol>
+<li>预请求的请求类型是 OPTIONS 类型</li>
+<li>Access-Control-Request-Method：这个头是请求所使用的 HTTP 方法，会始终包含在请求中</li>
+<li>Access-Control-Request-Headers：可选，这个头的值是一个以逗号分隔的非简单头列表，列表中的每个头都会包含在这个请求中</li>
+</ol>
+<p>预请求过程中的服务器端处理：<br>服务器端必须可以接受这个请求，然后检查 HTTP 方法和头的合法性。如果通过了检查，服务器会在响应中添加下面这个头：</p>
+<ol>
+<li>Access-Control-Allow-Origin：值是请求的来源或者星号</li>
+<li>Access-Control-Allow-Methods：这是服务器端可以接受的 HTTP 方法列表，浏览器可以缓存这个列表，以后非简单的 CORS 请求可以不必再次发送预请求</li>
+<li>Access-Control-Allow-Headers：如果设置了 Access-Control-Request-Headers 头，服务器必须在响应中添加同一个头</li>
+</ol>
+<p>如果预请求返回了 200 状态码，真正的请求就会发出了。</p>
+<h2 id="服务器端代理"><a href="#服务器端代理" class="headerlink" title="服务器端代理"></a>服务器端代理</h2><p>最后一个简单粗暴的实现跨域请求的方案就是架设服务器端代理，浏览器客户端的请求有同源策略的限制，但是后台程序的请求却没有任何限制的，所以可以架设一台代理服务器来负责向第三方发送实际的请求。</p>
+<h2 id="AJAX请求中使用XML"><a href="#AJAX请求中使用XML" class="headerlink" title="AJAX请求中使用XML"></a>AJAX请求中使用XML</h2><p>涨姿势了，异步请求中还可以使用XML格式响应数据，不过前端得需要添加一个可以将XML转换为JSON格式的类库X2JS，不过应该没人闲的蛋疼这么干了吧！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/16/AngularJS权威指南-XHR实战/" data-id="cizru1z91000f68twabj1hwfw" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/17/AngularJS权威指南-promise/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS权威指南-promise
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/16/AngularJS权威指南-XHR/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS权威指南-XHR</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

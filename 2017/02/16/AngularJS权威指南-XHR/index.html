@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS权威指南-XHR | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《AngularJS 权威教程》读书笔记，第十五章——同外界通信：XHR 和服务器通信。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS权威指南-XHR">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/16/AngularJS权威指南-XHR/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《AngularJS 权威教程》读书笔记，第十五章——同外界通信：XHR 和服务器通信。">
+<meta property="og:updated_time" content="2017-02-16T08:42:21.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS权威指南-XHR">
+<meta name="twitter:description" content="《AngularJS 权威教程》读书笔记，第十五章——同外界通信：XHR 和服务器通信。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS权威指南-XHR" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/16/AngularJS权威指南-XHR/" class="article-date">
+  <time datetime="2017-02-16T07:15:08.000Z" itemprop="datePublished">2017-02-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS权威指南-XHR
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《AngularJS 权威教程》读书笔记，第十五章——同外界通信：XHR 和服务器通信。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>$http 服务简单的封装了浏览器原生的 XMLHttpRequest 对象。<br>如果响应码在 200-299 之间，会认为响应成功，success 回调会被调用，否则 error 回调会被调用。<br>如果响应结果是重定向，XMLHttpRequest 会跟进这个重定向，error 回调并不会被调用。<br>调用 http 方法后，在下一个 $digest 循环运行之前它并不会被真正执行，尽管可以这样强制执行 digest 循环：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$scope.$apply(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    $http(&#123;</div><div class="line">        <span class="attr">method</span>: <span class="string">'GET'</span>,</div><div class="line">        <span class="attr">url</span>: <span class="string">'/api/users.json'</span></div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="请求设置"><a href="#请求设置" class="headerlink" title="请求设置"></a>请求设置</h2><ol>
+<li>params：请求参数可以是字符串map（会被当成查询字符串附加在 URL 后面）或者对象（会被 JSON 序列化）</li>
+<li>xsrfHeaderName</li>
+<li>xsrfCookieName</li>
+<li>cache：布尔值（如果为 true，那么 AngularJS 会用默认的 $http 缓存来对 GET 请求进行缓存）或一个 $cacheFactory 对象的实例（会使用这个对象对 GET 请求进行缓存）</li>
+<li>timeout：数值型（延迟请求的毫秒数）或一个 promise 对象（当该 promise 对象被 resolve 时请求会被中止）</li>
+<li>withCredentials：布尔型，若为 true，那么 XHR 请求对象中会设置 withCredentials 标记（默认情况下，CORS 请求不会发送 cookie，而 withCredentials 标记会在请求中加入 Access-Control-Allow-Credentials 头，这样请求就会将目标域的 cookie 包含在请求中）</li>
+<li>responseType：字符串，设置 XMLHttpRequestResponseType 属性，类型有：””（字符串，默认值）、”attaybugger”（ArrayBuffer）、”blob”（blob 对象）、”document”（HTTP 文档）、”json”（从 JSON 对象解析而来的 JSON 字符串）、”text”（字符串）、”moz-blob”（Firefox 的接收进度事件）、”moz-chunked-text”（文本流）、”moz-chunked-arraybuffer”（ArrayBuffer 流）</li>
+</ol>
+<h2 id="缓存请求"><a href="#缓存请求" class="headerlink" title="缓存请求"></a>缓存请求</h2><p>默认情况下，$http 服务并不会对请求进行本地缓存，启用缓存：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$http.get(<span class="string">'/api/users.json'</span>, &#123; <span class="attr">cache</span>: <span class="literal">true</span> &#125;)</div><div class="line">    .success(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; &#125;)</div><div class="line">    .error(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; &#125;);</div></pre></td></tr></table></figure></p>
+<p>这个例子中，设置了启用缓存，AngularJS 默认会使用 $cacheFactory，这个服务是 AngularJS 在启动时自动创建的。如果需要对缓存更多的自定义控制，比如使用 LRU（Least Recently Userd，最近最少使用）缓存：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> lru = $cacheFactory(<span class="string">'lru'</span>, &#123;</div><div class="line">    <span class="attr">capacity</span>: <span class="number">20</span></div><div class="line">&#125;);</div><div class="line">$http.get(<span class="string">'/api/users.json'</span>, &#123; <span class="attr">cache</span>: lru &#125;)</div><div class="line">    .success(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; &#125;)</div><div class="line">    .error(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; &#125;)</div></pre></td></tr></table></figure></p>
+<p>如果觉得每次请求都这样设置很麻烦，那么就在配置中统一配置吧：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp'</span>, [])</div><div class="line">    .config(<span class="function"><span class="keyword">function</span>(<span class="params">$httpProvider, $cacheFactory</span>)</span>&#123;</div><div class="line">        $httpProvider.defaults.cache = $cacheFactory(<span class="string">'lru'</span>, &#123;</div><div class="line">            <span class="attr">capacity</span>: <span class="number">20</span></div><div class="line">        &#125;);</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><p>自己配置一下就行了，主要是不会玩 promise</p>
+<h2 id="httpProvider"><a href="#httpProvider" class="headerlink" title="$httpProvider"></a>$httpProvider</h2><p>在配置里可以注入这玩意对所有的 XHR 请求统一配置</p>
+<h2 id="resource"><a href="#resource" class="headerlink" title="$resource"></a>$resource</h2><p>AngularJS 内置提供的一种与 RESTful 的服务端数据源交互的服务，你就知道它很好用就是了。。。</p>
+<h2 id="Restangular"><a href="#Restangular" class="headerlink" title="Restangular"></a>Restangular</h2><p>AngularJS 非置提供的一种与 RESTful 的服务端数据源交互的服务，你就知道它很好很强大就行了。。。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/16/AngularJS权威指南-XHR/" data-id="cizru1z8u000c68tw8vfx2dr1" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/16/AngularJS权威指南-XHR实战/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS权威指南-XHR实战
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/16/浏览器相关/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">浏览器相关</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

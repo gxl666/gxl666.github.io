@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>再遇AngularJS | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="半年前做前端实习时迷迷糊糊的用了两个月的 Angular（说起来快一年前的事了），当时对依赖注入什么的完全不理解，最近用了几个月 Spring 才明白过来。这几天又用了 Angular搬砖（还是 1 版本，并没有使用 AngularJS 2 或者 AngularJS 4，版本更新太快了） ，正好可以好好学习下这个被称之为前端九阳神功的框架！（曾听说：AngularJS 是前端里的九阳神功，学会了A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再遇AngularJS">
+<meta property="og:url" content="http://gxl666.github.io/2017/01/23/再遇AngularJS/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="半年前做前端实习时迷迷糊糊的用了两个月的 Angular（说起来快一年前的事了），当时对依赖注入什么的完全不理解，最近用了几个月 Spring 才明白过来。这几天又用了 Angular搬砖（还是 1 版本，并没有使用 AngularJS 2 或者 AngularJS 4，版本更新太快了） ，正好可以好好学习下这个被称之为前端九阳神功的框架！（曾听说：AngularJS 是前端里的九阳神功，学会了A">
+<meta property="og:updated_time" content="2017-01-23T06:23:56.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="再遇AngularJS">
+<meta name="twitter:description" content="半年前做前端实习时迷迷糊糊的用了两个月的 Angular（说起来快一年前的事了），当时对依赖注入什么的完全不理解，最近用了几个月 Spring 才明白过来。这几天又用了 Angular搬砖（还是 1 版本，并没有使用 AngularJS 2 或者 AngularJS 4，版本更新太快了） ，正好可以好好学习下这个被称之为前端九阳神功的框架！（曾听说：AngularJS 是前端里的九阳神功，学会了A">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-再遇AngularJS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/23/再遇AngularJS/" class="article-date">
+  <time datetime="2017-01-23T03:35:30.000Z" itemprop="datePublished">2017-01-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Angular/">Angular</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      再遇AngularJS
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>半年前做前端实习时迷迷糊糊的用了两个月的 Angular（说起来快一年前的事了），当时对依赖注入什么的完全不理解，最近用了几个月 Spring 才明白过来。这几天又用了 Angular搬砖（还是 1 版本，并没有使用 AngularJS 2 或者 AngularJS 4，版本更新太快了） ，正好可以好好学习下这个被称之为前端九阳神功的框架！（曾听说：AngularJS 是前端里的九阳神功，学会了AngularJS学什么都快；React 是前端里的九阴真经，学习过程中很容易走火入魔。）<br><a id="more"></a></p>
+<h2 id="AngularJS-作用"><a href="#AngularJS-作用" class="headerlink" title="AngularJS 作用"></a>AngularJS 作用</h2><p>既然要用 AngularJS，那么把它加入我们的项目究竟有什么用呢?</p>
+<ol>
+<li>双向数据绑定，非常棒的 MVVM 模型</li>
+<li>把应用数据绑定到 HTML 元素</li>
+<li>克隆和重复 HTML 元素</li>
+<li>显示和隐藏 HTML 元素</li>
+<li>表单输入验证</li>
+</ol>
+<p>当然了，单纯的 JS 或者 JQuery 也可以完成这些工作，但是写完之后你会发现你的 JS 代码就像一坨翔，别说别人不喜欢看，过一个月你自己都能看疯了。</p>
+<h2 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h2><p>AngularJS 表达式形式：<code></code> ，可以做数值、字符串常见的一些加减乘除操作，作用就跟 ng-bind 指令是一样的吧，还没发现两者有什么不同之处。AngularJS 表达式 与 JavaScript 表达式的异于同：</p>
+<ol>
+<li>两者都可以包含字母，操作符，变量</li>
+<li>AngularJS 不支持条件判断，循环以及异常处理</li>
+<li>AngularJS 可以写在 HTML 中</li>
+<li>AngularJS 支持过滤器</li>
+</ol>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>作用域是应用在 HTML（视图）和 JavaScript（控制器）之间的纽带，它是一个对象，有可用的方法和属性，可同时应用在视图和控制器上。创建控制器时，$scope 以参数的形式注入。根作用域，即 $rootSceop，它可以作用在 ng-app 指令包含的所有 HTML 元素中；控制器方面，$rootScope 可以作用于整个应用中，是各个 controller 中 scope 的桥梁，用 $rootScope 定义的值，可以在各个 controller 中使用。</p>
+<h2 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h2><p>AngularJS 控制器：控制器是 Javascript 对象，由标准的 JavaScript 对象的构造函数创建。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>AngularJS 过滤器：过滤器可以使用一个管道字符（|）添加到表达式和指令中，内置过滤器有：currency格式化数字为货币格式，filter从数组中选择一个子集，大小写转换过滤器，根据某个表达式排序数组。当然了，你可以自定义过滤器。</p>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><p>AngularJS 服务：服务是一个函数或对象。内置服务有 30 多个，常见的有 $location，$http，$timeout，$interval 等，这些都是对原生 JavaScript 中的一些函数的封装成 AngularJS 风格，在控制器中使用某项服务，需要注入。</p>
+<h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><p>AngularJS 中有五个核心组件可以用来作为依赖注入：value，constant，factory，service，provider。</p>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><p>AngularJS 最强大的地方估计就是指令：以 ng 作为前缀的 HTML 属性（HTML5 允许扩展属性，以 data- 开头，所以你也可以使用 data-ng- 来让网页对 HTML5 有效）。指令的作用就是来扩展 HTML 功能的，AngularJS 自带很多牛逼的指令，当然用户也可以自定义指令。常用内置指令如下：</p>
+<ul>
+<li>ng-app</li>
+<li>ng-controller</li>
+<li>ng-init</li>
+<li>ng-modal</li>
+<li>ng-bind</li>
+<li>ng-repeat </li>
+<li>ng-options</li>
+<li>ng-include</li>
+<li>ng-disabled</li>
+<li>ng-show</li>
+<li>ng-hide</li>
+</ul>
+<h3 id="自定义指令"><a href="#自定义指令" class="headerlink" title="自定义指令"></a>自定义指令</h3><p>四种调用指令的方式：</p>
+<table>
+<thead>
+<tr>
+<th>调用方式</th>
+<th>restrict值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>元素名</td>
+<td>E</td>
+</tr>
+<tr>
+<td>属性</td>
+<td>A</td>
+</tr>
+<tr>
+<td>类名</td>
+<td>C</td>
+</tr>
+<tr>
+<td>注释</td>
+<td>M</td>
+</tr>
+</tbody>
+</table>
+<h2 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h2><p>AngularJS 表单，form 元素一个 HTML5 新增的属性，novalidate 属性禁用了使用浏览器的默认验证（没想到浏览器还有默认验证呢），用了此属性，可让AngularJS重写标准的 HTML5 验证。</p>
+<ul>
+<li>$dirty: 表单有填写记录</li>
+<li>$valid: 字段内容合法</li>
+<li>$invalid: 字段内容非法</li>
+<li>$pristine: 表单没有填写记录</li>
+</ul>
+<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>还没具体学习，先不哔哔了。</p>
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><p>还没具体学习，先不哔哔了。</p>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>AngularJS 模块：模块定义了一个应用程序（这里说的模块并不同于我们普通认为的一个程序可以分为多个模块，AngularJS 中一个模块就只是表示一个完整的应用），它是应用程序中不同部分的容器，它是控制器的容器。我们都知道 JavaScript 中应该避免使用全局函数，因为它们很容易被其他脚本文件覆盖，所以 AngularJS 模块让所有函数的作用域局限在该模块下，避免了该问题。我们自己的 AngularJS 脚本必须放在 html 文档底部（body闭合标签之前，因为我们要等上面使用了指令的dom结构渲染完毕，才能使用AngularJS来处理它们，不然你处理个屁啊），但是AngularJS库可以放在头部引入。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/01/23/再遇AngularJS/" data-id="cizru1zon00ax68twd1lppeko" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Angular/">Angular</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/23/AngularJS权威指南-数据绑定和第一个AngularJS-Web应用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS权威指南-数据绑定和第一个AngularJS Web应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/22/Angular-学习之Promise/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Angular 学习之Promise</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

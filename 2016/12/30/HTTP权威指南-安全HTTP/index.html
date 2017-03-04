@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HTTP权威指南 安全HTTP | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《HTTP 权威指南》第十四章——安全HTTP，阅读笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP权威指南 安全HTTP">
+<meta property="og:url" content="http://gxl666.github.io/2016/12/30/HTTP权威指南-安全HTTP/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《HTTP 权威指南》第十四章——安全HTTP，阅读笔记。">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1fb8zlzck5sj30qo0c10ty.jpg">
+<meta property="og:updated_time" content="2016-12-30T10:45:47.515Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP权威指南 安全HTTP">
+<meta name="twitter:description" content="《HTTP 权威指南》第十四章——安全HTTP，阅读笔记。">
+<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/006zuwa2gw1fb8zlzck5sj30qo0c10ty.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HTTP权威指南-安全HTTP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/30/HTTP权威指南-安全HTTP/" class="article-date">
+  <time datetime="2016-12-30T09:40:26.000Z" itemprop="datePublished">2016-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTTP权威指南/">HTTP权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTTP权威指南 安全HTTP
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《HTTP 权威指南》第十四章——安全HTTP，阅读笔记。<br><a id="more"></a></p>
+<h2 id="数字加密"><a href="#数字加密" class="headerlink" title="数字加密"></a>数字加密</h2><p>数字加密进化史：密码-&gt;秘钥+密码：对称秘钥加密系统、非对称秘钥加密系统（即公开秘钥加密系统，秘钥分为公有秘钥和私有秘钥）</p>
+<ul>
+<li>密码弊病：可以暴力破解</li>
+<li>对称秘钥加密系统弊病：每有一个客户端连接服务器，服务器就得为该客户端生成一个单独的秘钥，这样当客户端多起来时，服务器端会同时维护大量的秘钥，并且得保证每一个秘钥都不能被黑客窃取</li>
+<li>非对称秘钥加密系统弊病：加密、解密耗时较长</li>
+</ul>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>公开秘钥加密系统的实现难点是要确保即便有人拥有了以下所有线索，也无法计算出保密的私有秘钥：</p>
+<ul>
+<li>公开秘钥（所有人都可以获得）</li>
+<li>一小片拦截下来的密文</li>
+<li>一条报文以及与之相关的密文（对任意一段文本运行加密就可以得到）</li>
+</ul>
+<p>RSA 就是 MIT 发明的一套公开秘钥加密系统。</p>
+<h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>除了加/解密报文外，还可以用加密系统对报文进行签名（sign），以说明是谁编写的报文，同时证明报文未被篡改过。这种技术被称为数字签名（digital signing）。数字签名是附加在报文上的特殊加密校验码。<br>数字签名原理：数字签名通常用于非对称公开秘钥加密系统，发送端先对报文提取定长的摘要，然后使用自己的私有秘钥作为参数，对摘要应用“签名”函数生成签名，最后将生成的签名附加在报文末尾发送给接收端。接收端对收到的“签名”应用公开秘钥的反函数，然后判断解析出来的摘要与自己对报文提取出来的摘要是否匹配。</p>
+<h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>数字证书没有单一的全球标准，但大多数数字证书都以一种标准格式——X.509 v3 来存储它们的信息。一般的数字证书的内容如下：<br><img src="http://ww2.sinaimg.cn/large/006zuwa2gw1fb8zlzck5sj30qo0c10ty.jpg" alt="数字证书"></p>
+<ul>
+<li>数字证书的使用：通过 HTTPS 建立了一个安全 Web 事务后，浏览器会自动获取所连接服务器的数字证书。如果服务器没有证书，安全连接就会失败。浏览器收到证书时会对签名颁发机构进行检查，如果这个机构是个很有权威的公开签发机构，浏览器可能已经知道其公开秘钥了（浏览器会预先安装很多签名颁发机构的证书），这样就可以通过数字签名来验证证书的完整性了。如果对签名颁发机构一无所知，浏览器就无法确定是否应该信任这个签名颁发机构，它通常会向用户显示一个对话框，看看他是否相信这个签名发布者。</li>
+<li>为什么需要数字证书：HTTPS 已经改善了 HTTP 对报文明文传输的问题，但是客户端仍不能保证自己目前连接的就是真正想连接的服务器端，自己连接的也有可能是黑客伪造的服务器端。所以需要数字证书来保证客户端连接的就是真正的服务器端。数字证书由权威机构颁发，并且有域名等信息，这些黑客是伪造不出来的，除非黑客攻克了颁发证书的权威机构。</li>
+</ul>
+<h2 id="OpenSSL"><a href="#OpenSSL" class="headerlink" title="OpenSSL"></a>OpenSSL</h2><p><a href="http://www.openssl.org" target="_blank" rel="external">OpenSSL</a> 是 SSL 和 TLS 最常见的开源实现。</p>
+<h2 id="通过代理以隧道形式传输安全流量"><a href="#通过代理以隧道形式传输安全流量" class="headerlink" title="通过代理以隧道形式传输安全流量"></a>通过代理以隧道形式传输安全流量</h2><p>使用 HTTPS 后，代理就再也不能读取已经加密了的 HTTP 首部了，也就无法知道应该将请求转发到何处了。一种解决办法就是 HTTPS SSL 隧道协议：客户端首先要告知代理它想要连接的安全主机和端口，这是在开始加密之前，以明文形式告知的，所以代理可以理解这条信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/12/30/HTTP权威指南-安全HTTP/" data-id="cizru1zdo002468twtki7ypef" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/31/深入理解Java虚拟机-虚拟机性能监控与故障处理工具/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          深入理解Java虚拟机 虚拟机性能监控与故障处理工具
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/25/HTTP权威指南-连接管理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">HTTP权威指南 连接管理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

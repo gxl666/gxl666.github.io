@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS权威指南-服务 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《AngularJS 权威教程》读书笔记，第十四章——服务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS权威指南-服务">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/16/AngularJS权威指南-服务/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《AngularJS 权威教程》读书笔记，第十四章——服务。">
+<meta property="og:updated_time" content="2017-02-16T07:01:20.237Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS权威指南-服务">
+<meta name="twitter:description" content="《AngularJS 权威教程》读书笔记，第十四章——服务。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS权威指南-服务" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/16/AngularJS权威指南-服务/" class="article-date">
+  <time datetime="2017-02-16T01:57:48.000Z" itemprop="datePublished">2017-02-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS权威指南-服务
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《AngularJS 权威教程》读书笔记，第十四章——服务。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>处于内存占用和性能的考虑，控制器只会在需要时被实例化，并且不再需要就会被销毁。这也就是说：每次切换路由或重新加载视图时，当前的控制器会被 AngularJS 清除掉。<br>服务提供了一种能在应用的整个声明周期内保持数据的方法，它能够在控制器之间进行通信，并且能保证数据的一致性。<br>服务是一个单例对象，在每个应用中只会被实例化一次（被 $injector 实例化），并且是延迟加载的（需要时才会被创建，懒汉式单例）。<br>在自定义服务之前注入所有的 AngularJS 内置服务，这是约定俗成的规则。</p>
+<h2 id="注册一个服务"><a href="#注册一个服务" class="headerlink" title="注册一个服务"></a>注册一个服务</h2><p>使用 angular.module 的 factory API 创建服务，是最常见也是最灵活的方式：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'myApp.services'</span>, [])</div><div class="line">    .config(<span class="function"><span class="keyword">function</span>(<span class="params">$sceDelegateProvider</span>)</span>&#123;</div><div class="line">        $sceDelegateProvider.resourceUrlWhitelist([</div><div class="line">            <span class="comment">// Allow same origin resource loads.</span></div><div class="line">            <span class="string">'self'</span>,</div><div class="line">            <span class="string">'https://api.github.com/**'</span></div><div class="line">        ]);</div><div class="line">        $sceDelegateProvider.resourceUrlBlacklist([</div><div class="line">            <span class="string">'https://www.baidu.com'</span></div><div class="line">        ]);</div><div class="line">    &#125;)</div><div class="line">    .factory(<span class="string">'githubService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$http</span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> githubUrl = <span class="string">'https://api.github.com'</span>;</div><div class="line"></div><div class="line">        <span class="keyword">var</span> runUserRequest = <span class="function"><span class="keyword">function</span>(<span class="params">username, path</span>)</span>&#123;</div><div class="line">            <span class="keyword">return</span> $http(&#123;</div><div class="line">                <span class="attr">method</span>: <span class="string">'JSONP'</span>,</div><div class="line">                <span class="attr">url</span>: githubUrl + <span class="string">'/users/'</span> + username + <span class="string">'/'</span> + path  + <span class="string">''</span></div><div class="line">            &#125;);</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">events</span>: <span class="function"><span class="keyword">function</span>(<span class="params">username</span>)</span>&#123;</div><div class="line">                <span class="keyword">return</span> runUserRequest(username, <span class="string">'events'</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="使用服务"><a href="#使用服务" class="headerlink" title="使用服务"></a>使用服务</h2><p>可以在控制器、指令、过滤器或另外一个服务中通过依赖声明的方式来使用服务：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html ng-app="myApp"&gt;</div><div class="line">&lt;head&gt;</div><div class="line">    &lt;title&gt;Parse Expression Example&lt;/title&gt;</div><div class="line">    &lt;link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"&gt;</div><div class="line">    &lt;script type="text/javascript" src="js/angular.min.js"&gt;&lt;/script&gt;</div><div class="line">    &lt;style type="text/css"&gt;</div><div class="line">        </div><div class="line">    &lt;/style&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body ng-controller="ServiceController"&gt;</div><div class="line">    &lt;div&gt;</div><div class="line">        &lt;label for="username"&gt;Type in a Github username&lt;/label&gt;</div><div class="line">        &lt;input type="text" name="username" ng-model="username" placeholder="Enter a Github username"&gt;</div><div class="line">        &lt;ul&gt;</div><div class="line">            &lt;li ng-repeat="event in events"&gt;</div><div class="line">                &#123;&#123; event.actor.login &#125;&#125; | &#123;&#123; event.repo.name &#125;&#125;</div><div class="line">            &lt;/li&gt;</div><div class="line">        &lt;/ul&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line">    angular.module('myApp.services', [])</div><div class="line">        .config(function($sceDelegateProvider)&#123;</div><div class="line">            $sceDelegateProvider.resourceUrlWhitelist([</div><div class="line">                // Allow same origin resource loads.</div><div class="line">                'self',</div><div class="line">                'https://api.github.com/**'</div><div class="line">            ]);</div><div class="line">            $sceDelegateProvider.resourceUrlBlacklist([</div><div class="line">                'https://www.baidu.com'</div><div class="line">            ]);</div><div class="line">        &#125;)</div><div class="line">        .factory('githubService', function($http)&#123;</div><div class="line">            var githubUrl = 'https://api.github.com';</div><div class="line"></div><div class="line">            var runUserRequest = function(username, path)&#123;</div><div class="line">                return $http(&#123;</div><div class="line">                    method: 'JSONP',</div><div class="line">                    url: githubUrl + '/users/' + username + '/' + path  + ''</div><div class="line">                &#125;);</div><div class="line">            &#125;;</div><div class="line"></div><div class="line">            return &#123;</div><div class="line">                events: function(username)&#123;</div><div class="line">                    return runUserRequest(username, 'events');</div><div class="line">                &#125;</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">    angular.module('myApp', ['myApp.services'])</div><div class="line">        .controller('ServiceController', function($scope, $timeout, githubService) &#123;</div><div class="line">            var timeout;</div><div class="line">            $scope.$watch('username', function(newUsername)&#123;</div><div class="line">                if(newUsername)&#123;</div><div class="line">                    if(timeout)&#123;</div><div class="line">                        $timeout.cancel(timeout);</div><div class="line">                    &#125;</div><div class="line">                    timeout = $timeout(function()&#123;</div><div class="line">                        githubService.events(newUsername)</div><div class="line">                            .then(function(res)&#123;</div><div class="line">                                if(res.data &amp;&amp; angular.isArray(res.data.data))&#123;</div><div class="line">                                    $scope.events = res.data.data;</div><div class="line">                                &#125;else &#123;</div><div class="line">                                    $scope.events = [];</div><div class="line">                                &#125;</div><div class="line">                            &#125;);</div><div class="line">                    &#125;, 900);</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">        &#125;);</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>服务的作用不光是将类似功能打包在一起，也可以在控制器之间共享数据。</p>
+<h2 id="其他创建服务的方式"><a href="#其他创建服务的方式" class="headerlink" title="其他创建服务的方式"></a>其他创建服务的方式</h2><p>AngularJS 中共有五种方法创建服务：</p>
+<ol>
+<li>factory：用法如上</li>
+<li>service：可以注册一个支持构造函数的服务，它允许我们为服务对象注册一个构造函数</li>
+<li>provider：所有服务工厂都是由 $provide 服务创建的，$provide 服务负责在运行时初始化这些提供者，并在 $providerCache 中注册服务。如果希望在 config 函数中对服务进行配置，必须用 provider 来定义服务</li>
+<li>constant：创建常量服务，常量服务通常注入到配置函数中，常量服务不能被装饰器拦截</li>
+<li>value：创建值服务，值服务不能注入到配置函数中，但可以注入到其他内容中</li>
+</ol>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>装饰器可以在服务实例化时对其进行拦截，可以对服务进行扩展，或者用另外的内容完全代替它。<br>装饰器是非常强大的，它不仅可以应用在自己的服务上，也可以对 AngularJS 的核心服务进行拦截、中断甚至替换功能等操作。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/16/AngularJS权威指南-服务/" data-id="cizru1zb3001868twj7eh1y96" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/16/浏览器相关/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          浏览器相关
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/16/AngularJS权威指南-依赖注入/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS权威指南-依赖注入</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

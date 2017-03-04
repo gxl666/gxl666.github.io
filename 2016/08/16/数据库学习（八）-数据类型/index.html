@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>数据库学习（八）-数据类型 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在看W3School教程-create table一节时，因为创建一张表时需要指定各个字段的数据类型，而我又对MySQL中的字段数据类型不甚了解，所以先学习一下数据类型的内容吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库学习（八）-数据类型">
+<meta property="og:url" content="http://gxl666.github.io/2016/08/16/数据库学习（八）-数据类型/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="在看W3School教程-create table一节时，因为创建一张表时需要指定各个字段的数据类型，而我又对MySQL中的字段数据类型不甚了解，所以先学习一下数据类型的内容吧！">
+<meta property="og:updated_time" content="2016-08-17T03:54:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库学习（八）-数据类型">
+<meta name="twitter:description" content="在看W3School教程-create table一节时，因为创建一张表时需要指定各个字段的数据类型，而我又对MySQL中的字段数据类型不甚了解，所以先学习一下数据类型的内容吧！">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-数据库学习（八）-数据类型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/16/数据库学习（八）-数据类型/" class="article-date">
+  <time datetime="2016-08-16T00:42:57.000Z" itemprop="datePublished">2016-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据库学习（八）-数据类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在看<a href="http://www.w3school.com.cn/sql/sql_create_table.asp" target="_blank" rel="external">W3School教程-create table</a>一节时，因为创建一张表时需要指定各个字段的数据类型，而我又对MySQL中的字段数据类型不甚了解，所以先学习一下数据类型的内容吧！<br><a id="more"></a><br>幸好W3School中也有一篇专门介绍数据类型的<a href="http://www.w3school.com.cn/sql/sql_datatypes.asp" target="_blank" rel="external">教程</a>。</p>
+<h2 id="Text类型"><a href="#Text类型" class="headerlink" title="Text类型"></a>Text类型</h2><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char(size)</td>
+<td>保存固定长度的字符串，在括号中指定字符串的长度，最多255个字符</td>
+</tr>
+<tr>
+<td>varchar(size)</td>
+<td>保存可变长度的字符串，在括号中指定字符串的最大长度，最多255个字符</td>
+</tr>
+<tr>
+<td>tinytext</td>
+<td>存放最大长度为255个字符的字符串</td>
+</tr>
+<tr>
+<td>text</td>
+<td>存放最大长度为65535个字符的字符串</td>
+</tr>
+<tr>
+<td>blob</td>
+<td>用于blobs(Binary Large Objects)。存放最多65535字节的数据</td>
+</tr>
+<tr>
+<td>mediumtext</td>
+<td>存放最大长度为16,777,215个字符的字符串</td>
+</tr>
+<tr>
+<td>mediumblog</td>
+<td>用于blobs(Binary Large Objects)。存放最多16,777,215字节的数据</td>
+</tr>
+<tr>
+<td>longtext</td>
+<td>存放最大长度为4,294,967,295个字符的字符串</td>
+</tr>
+<tr>
+<td>longblob</td>
+<td>用于blobs(Binary Large Objects)。存放最多4,294,967,295字节的数据</td>
+</tr>
+<tr>
+<td>enum(x,y,z,etc.)</td>
+<td>允许输入可能值的列表。可以在 ENUM 列表中列出最大 65535 个值。如果列表中不存在插入的值，则插入空值。</td>
+</tr>
+<tr>
+<td>set</td>
+<td>与 ENUM 类似，SET 最多只能包含 64 个列表项，不过 SET 可存储一个以上的值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h2><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tinyint(size)</td>
+<td>-128到127。0到255无符号。在括号中规定最大位数</td>
+</tr>
+<tr>
+<td>smallint(size)</td>
+<td>-32768到32767。0到65535无符号。在括号中规定最大位数</td>
+</tr>
+<tr>
+<td>mediumint(size)</td>
+<td>-8388608到8388607。0到16777215无符号。在括号中规定最大位数</td>
+</tr>
+<tr>
+<td>int(size)</td>
+<td>-2147483648到2147483647。0到4294967295无符号。在括号中规定最大位数</td>
+</tr>
+<tr>
+<td>bigint(size)</td>
+<td>-9223372036854775808到9223372036854775807。0到18446744073709551615无符号。在括号中规定最大位数</td>
+</tr>
+<tr>
+<td>float(size, d)</td>
+<td>带有浮动小数点的小数字。在括号中规定最大位数。在d参数中规定小数点右侧的最大位数</td>
+</tr>
+<tr>
+<td>double(size, d)</td>
+<td>带有浮动小数点的大数字。在括号中规定最大位数。在d参数中规定小数点右侧的最大位数</td>
+</tr>
+<tr>
+<td>decimal(zize, d)</td>
+<td>作为字符串存储的double类型，允许固定的小数点</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Date类型"><a href="#Date类型" class="headerlink" title="Date类型"></a>Date类型</h2><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date()</td>
+<td>日期。格式：YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>datetime()</td>
+<td>日期和时间的组合。格式：YYYY-MM-DD HHMMSS</td>
+</tr>
+<tr>
+<td>timestamp()</td>
+<td>时间戳。格式：YYYY-MM-DD HH:MM:SS</td>
+</tr>
+<tr>
+<td>time()</td>
+<td>时间。格式：HH:MM:SS</td>
+</tr>
+<tr>
+<td>year()</td>
+<td>2位或4位格式的年</td>
+</tr>
+</tbody>
+</table>
+<p>注意：尽管datetime和timestamp返回相同的格式，它们的工作方式不同。在insert或update操作中，timestamp会自动把自身设置为当前时间，并且timestamp支持的范围是：’1970-01-01 00:00:01’ UTC 到 ‘2038-01-09 03:14:07’ UTC。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/08/16/数据库学习（八）-数据类型/" data-id="cizru1zr000d768two2rsmw23" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/16/数据库学习（九）-约束/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          数据库学习（九）-约束
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/15/数据库学习（七）-select-into/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">数据库学习（七）-select into</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

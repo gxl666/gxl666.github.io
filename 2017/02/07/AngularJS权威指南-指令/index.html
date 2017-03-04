@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS权威指南-指令 | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="《AngularJS 权威教程》读书笔记，第八，九章——指令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS权威指南-指令">
+<meta property="og:url" content="http://gxl666.github.io/2017/02/07/AngularJS权威指南-指令/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="《AngularJS 权威教程》读书笔记，第八，九章——指令。">
+<meta property="og:updated_time" content="2017-02-07T07:22:53.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS权威指南-指令">
+<meta name="twitter:description" content="《AngularJS 权威教程》读书笔记，第八，九章——指令。">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS权威指南-指令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/07/AngularJS权威指南-指令/" class="article-date">
+  <time datetime="2017-02-07T01:47:58.000Z" itemprop="datePublished">2017-02-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS权威指南-指令
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《AngularJS 权威教程》读书笔记，第八，九章——指令。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>指令是啥？就是 AngularJS 用来扩展 HTML 功能的“洛基的权杖”</p>
+<h2 id="内置指令"><a href="#内置指令" class="headerlink" title="内置指令"></a>内置指令</h2><h3 id="内置指令简介"><a href="#内置指令简介" class="headerlink" title="内置指令简介"></a>内置指令简介</h3><p>当在 HTML 中使用标签时，并不一定能明确看出是否在使用指令，例如：<code>&lt;form&gt;</code> 标签被从底层扩展了一系列高级功能，包括表单验证等，原生 HTML 表单并不会提供这些功能</p>
+<h3 id="内置布尔属性"><a href="#内置布尔属性" class="headerlink" title="内置布尔属性"></a>内置布尔属性</h3><p>根据 HTML 标准的定义，布尔属性代表一个 true 或 false 值。当这个属性出现时，这个属性的值就是 true（无论实际定义的值是什么）；如果未出现，这个属性的值就是 false。<br>当在 AngularJS 中使用动态数据绑定时，不能简单地将这个属性值设置为 true 或 false，因为根据标准定义只有当这个属性不出现时，它的值才为 false。因此 AngularJS 提供了一组带有 ng- 前缀版本的布尔属性，通过运算表达式的值来决定在目标元素上插入还是移出对应的属性。<br>AngularJS 中的内置布尔属性指令有：</p>
+<ol>
+<li>ng-disabled</li>
+<li>ng-readonly</li>
+<li>ng-checked（<code>&lt;input type=&quot;checkbox&quot;/&gt;</code>）</li>
+<li>ng-selected（select 的 option 标签）</li>
+</ol>
+<p>AngularJS 中的类布尔属性（非标准 HTML 布尔属性，但是行为相似）有：</p>
+<ol>
+<li>ng-href：可以动态修改 a 标签的 href 属性</li>
+<li>ng-src：AngularJS 会告诉浏览器在 ng-src 对应的表达式生效之前不要加载图像，防止浏览器产生 404 网络请求</li>
+<li>ng-class</li>
+<li>ng-style</li>
+</ol>
+<p>看完这个类布尔属性，也没发现它们行为相似啊。。。</p>
+<h3 id="其他内置指令（都跟作用域相关，一般都会生成一个独立的作用域）"><a href="#其他内置指令（都跟作用域相关，一般都会生成一个独立的作用域）" class="headerlink" title="其他内置指令（都跟作用域相关，一般都会生成一个独立的作用域）"></a>其他内置指令（都跟作用域相关，一般都会生成一个独立的作用域）</h3><ol>
+<li>ng-app：该指令为 AngularJS 应用创建 $rootScope</li>
+<li>ng-controller：该指令会创建 $scope，$scope 会从父级 $scope（有可能为 $rootScope）那里继承属性和方法。$scope 是一个对象，它的职责是承载 DOM 中指令所共享的操作（标准的 JavaScript 方法）和模型（模型是指 ￥scope 上保存的包含瞬时状态数据的 JavaScript 对象，持久化状态的数据应该保存到服务中，服务的作用是处理模型的持久化）。</li>
+<li>ng-include：该指令可以加载、编译并包含外部 HTML 片段到当前应用中，但模板的 URL 被限制在与应用文档相同的域和协议下，可以通过白名单或包装成被信任的值来突破限制。更进一步，需要考虑跨域资源共享（Cross-Origin Resource Sharing，CORS）和同源规则（Same Origin Policy）。注意：该指令默认会自动创建一个子作用域，如果想使用某个特定的作用域，则必须在同一个 DOM 元素上添加 ng-controller=”ControllerA”。</li>
+<li><p>ng-switch：该指令用法如下（跟 switch 差不多，但 default 在最前面）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">"person.name"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-switch</span> <span class="attr">on</span>=<span class="string">"person.name"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">ng-switch-default</span>&gt;</span>And the winner is <span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">ng-switch-when</span>=<span class="string">"Ari"</span>&gt;</span>&#123;&#123; person.name &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>ng-view：用来设置将被路由管理和放置在 HTML 中的视图的位置</p>
+</li>
+<li>ng-if：生成或移出一个节点（ng-show 和 ng-hide 是通过 CSS 来显示或隐藏节点的）</li>
+<li>ng-repeat：用来遍历一个集合或为集合中的每个元素生成一个模板实例，集合中每个元素都会被赋予自己的模板和作用域，同时还有额外属性：$index, $first, $middle, $last, $even, $odd</li>
+<li>ng-init：很简单的指令，之所以放在这里也是因为它会生成单独的作用域吧！</li>
+<li>｛｛｝｝：没错，就是模板表达式，实际上它是 ng-bind 的简略形式，用这种形式不需要创建新的元素，因此它常被用在行内文本中。注意：在屏幕可视的区域内使用 ｛｛｝｝ 会导致页面加载时未渲染的元素发生闪烁，用 ng-bind 可以避免这个问题</li>
+<li>ng-bind：HTML 加载含有 ｛｛｝｝ 语法的元素后并不会立刻渲染它们，导致未渲染内容闪烁（Flash of Unrendered Content，FOUC），这里说的应该就是：刚开始看到了 <code>｛｛  xxx ｝｝</code> 这样的内容，后来才看到具体变量的值 <code>AAA</code>。使用 ng-bind 就不会有这样的问题</li>
+<li>ng-cloak：除了使用 ng-bind 来避免未渲染元素闪烁，还可以在含有 ｛｛｝｝ 的元素上使用 ng-cloak 指令。ng-cloak 指令会将内部元素隐藏，直到路由调用对应的页面时才显示出来。</li>
+<li>ng-bind-template：同 ng-bind 指令类似，ng-bind-template 用来在视图中绑定多个表达式</li>
+<li>ng-model：该指令用来将 input、select、text area 或自定义表单控件同包含它们的作用域中的属性进行绑定。它可以提供并处理表单验证功能，在元素上设置相关的 CSS 类（ng-valid、ng-invalid等），并负责在父表单中注册控件</li>
+<li>ng-show/ng-hide：ng-if 都会了，更别提这俩了</li>
+<li>ng-change：表单输入变化时触发</li>
+<li><p>ng-form 用来在一个表单内部嵌套另一个表单（普通的 HTML <code>&lt;form&gt;</code> 标签不允许嵌套），这意味着内部所有子表单都合法时，外部的表单才会合法。Angular 不会将表单提交到服务器，除非它指定了 action 属性。要指定提交表单时调用哪个 JavaScript 方法，使用下面两个指令中的一个：</p>
+<ul>
+<li>ng-submit：在表单元素上使用</li>
+<li>ng-click：在第一个按钮或submit类型的输入字段上使用</li>
+</ul>
+</li>
+<li><p>ng-click：不说了</p>
+</li>
+<li>ng-select：</li>
+<li>ng-submit：用来将表达式同 onsubmit 事件进行绑定，这个指令同时会阻止默认行为（发送请求并重新加载页面）</li>
+<li><p>ng-class：使用 ng-class 动态设置元素的类，用法如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.red &#123;</div><div class="line">    background-color: red;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-class</span>=<span class="string">"&#123;red: x &gt; 5&#125;"</span> <span class="attr">ng-if</span>=<span class="string">"x &gt; 5"</span>&gt;</span></div><div class="line">    You won!</div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"x = generateNumber()"</span> <span class="attr">ng-init</span>=<span class="string">"x = 0"</span>&gt;</span>Draw Number<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Number is: &#123;&#123; x &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>ng-attr-(suffix)：当 AngularJS 编译 DOM 时会查找花括号｛｛ some expression ｝｝内的表达式，这些表达式会被自动注册到 $watch 服务中并更新到 $digest 循环中，成为它的一部分。有时浏览器会对属性会进行很严苛的限制，SVG就是一个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"&#123;&#123; cx &#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>运行上面的代码会抛出一个错误，指出我们有一个非法属性。可以使用 ng-attr-cx 来解决这个问题。注意，cx 位于这个名称的尾部：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">circle</span> <span class="attr">ng-attr-cx</span>=<span class="string">"&#123;&#123; cx &#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/02/07/AngularJS权威指南-指令/" data-id="cizru1zaa000v68tw5ih0h2ec" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/07/AngularJS权威指南-指令详解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          AngularJS权威指南-指令详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/06/AngularJS权威指南-表单验证/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">AngularJS权威指南-表单验证</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

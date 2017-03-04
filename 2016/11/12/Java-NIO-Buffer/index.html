@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java NIO Buffer | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java NIO 缓冲区，原文地址：http://tutorials.jenkov.com/java-nio/buffers.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java NIO Buffer">
+<meta property="og:url" content="http://gxl666.github.io/2016/11/12/Java-NIO-Buffer/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="Java NIO 缓冲区，原文地址：http://tutorials.jenkov.com/java-nio/buffers.html">
+<meta property="og:image" content="http://tutorials.jenkov.com/images/java-nio/buffers-modes.png">
+<meta property="og:updated_time" content="2016-11-13T05:39:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java NIO Buffer">
+<meta name="twitter:description" content="Java NIO 缓冲区，原文地址：http://tutorials.jenkov.com/java-nio/buffers.html">
+<meta name="twitter:image" content="http://tutorials.jenkov.com/images/java-nio/buffers-modes.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java-NIO-Buffer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/12/Java-NIO-Buffer/" class="article-date">
+  <time datetime="2016-11-12T14:02:27.000Z" itemprop="datePublished">2016-11-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java NIO Buffer
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java NIO 缓冲区，原文地址：<a href="http://tutorials.jenkov.com/java-nio/buffers.html" target="_blank" rel="external">http://tutorials.jenkov.com/java-nio/buffers.html</a><br><a id="more"></a><br>Java NIO 缓冲区一般和 NIO 通道一起使用。正如你已经知道的，数据可以从通道读取出来写入缓冲区，也可以从缓冲区读取出来写入通道。<br>缓冲区是你可以从中读写数据的内存块。正是一个 NIO 缓冲区对象包含着这么个内存块，而缓冲区对象提供了一系列的方法可以让你操作这个内存块。</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>使用缓冲区读写数据一般需要遵循以下四步：</p>
+<ol>
+<li>写数据到缓冲区</li>
+<li>调用 <code>buffer.flip()</code> 方法</li>
+<li>从缓冲区中读出数据</li>
+<li>调用 <code>buffer.clear()</code> 或者 <code>buffer.compact()</code> 方法</li>
+</ol>
+<p>当你向缓冲区写入数据时，缓冲区对象会自动记录你写入了多少数据。当你想要从缓冲区中读取数据时，你需要调用 <code>flip()</code> 方法切换写模式到读模式。使用读模式后，你可以读取缓冲区中的所有数据。<br>一旦你读取完所有的数据，你需要清空缓冲区，为下一次写入数据做好准备。清空缓冲区的方式有两种：<code>clear()</code> 和 <code>compact()</code>。<code>clear()</code> 方法清空缓冲区所有内容，而 <code>compact()</code> 方法只会清空你已读的内容。所有未读的数据将会被放在缓冲区开始的地方，之后再写入的数据将会放在未读数据的后面。<br>以下是缓冲区的使用例子，里面综合运用了上文提到的几种操作：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">RandomAccessFile aFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"data/nio-data.txt"</span>, <span class="string">"rw"</span>);</div><div class="line">FileChannel inChannel = aFile.getChannel();</div><div class="line"></div><div class="line"><span class="comment">//create buffer with capacity of 48 bytes</span></div><div class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);</div><div class="line"></div><div class="line"><span class="keyword">int</span> bytesRead = inChannel.read(buf); <span class="comment">//read into buffer.</span></div><div class="line"><span class="keyword">while</span> (bytesRead != -<span class="number">1</span>) &#123;</div><div class="line"></div><div class="line">  buf.flip();  <span class="comment">//make buffer ready for read</span></div><div class="line"></div><div class="line">  <span class="keyword">while</span>(buf.hasRemaining())&#123;</div><div class="line">      System.out.print((<span class="keyword">char</span>) buf.get()); <span class="comment">// read 1 byte at a time</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  buf.clear(); <span class="comment">//make buffer ready for writing</span></div><div class="line">  bytesRead = inChannel.read(buf);</div><div class="line">&#125;</div><div class="line">aFile.close();</div></pre></td></tr></table></figure></p>
+<p>##　缓冲区容量，位置和限制</p>
+<p>一个缓冲区代表着一块内存区域，你可以向里面写入数据，也可以从其中读出数据。而一个 NIO 缓冲区对象就就表示这么一块内存区域，而缓冲区对象提供了一系列可以方便操作这块内存区域的方法。<br>为了理解缓冲区具体是怎么实现的，我们需要了解缓冲区的三个属性：</p>
+<ul>
+<li>容量</li>
+<li>位置</li>
+<li>限制</li>
+</ul>
+<p>“位置”和“限制”的含义在读模式和写模式下有所不同。而“容量”的含义在两种模式下是相同的。<br>下面的插图展示了读模式和写模式下容量、位置和限制的含义。如果你没看懂，那就继续看下面的解释。<br><img src="http://tutorials.jenkov.com/images/java-nio/buffers-modes.png" alt="Buffer capacity, position and limit in write and read mode"></p>
+<h2 id="容量"><a href="#容量" class="headerlink" title="容量"></a>容量</h2><p>作为一块内存区域，一个缓冲区对象有一个确定且固定的大小，我们称这个“大小”为“容量”。你向缓冲区写入数据时，并不能超过其容量的限制。一旦缓冲区写满了，在继续写入之前你需要清空它（读出其中的数据，或者清空它）。</p>
+<h2 id="位置"><a href="#位置" class="headerlink" title="位置"></a>位置</h2><p>当你向缓冲区写入数据时，你是在一个该缓冲区代表的内存区域的一个特定位置写入数据的。刚开始这个特定位置是 0。当你写入一个单元（这个单元可以是一个字节，一个长整数类型，这取决于缓冲区对象实现的具体类型）的数据后，这个特定的位置会移向下一个单元。位置最大值就是容量减一。<br>当你从缓冲区读数据时，你也时从一个给定的位置开始读取的。当你调用 <code>flip()</code> 方法从写模式切换到读模式后，位置会被重置为 0。随着你读取数据，这个特定的位置记录也会相应的后移。</p>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p>在写模式下，限制就是指你最多可以写多少数据到缓冲区。因此，写模式下，限制就等于容量。<br>当你切换到读模式后，限制就是指你可以从缓冲区读出多少数据。因此，当把一个缓冲区切换到读模式后，限制就是指读模式下的位置记录。换句话说，你最多可以读出你所写入的数据。</p>
+<h2 id="缓冲区类型"><a href="#缓冲区类型" class="headerlink" title="缓冲区类型"></a>缓冲区类型</h2><p>Java NIO 中缓冲区的所有类型如下：</p>
+<ul>
+<li>字节缓冲区</li>
+<li>字符缓冲区</li>
+<li>短整型缓冲区</li>
+<li>整型缓冲区</li>
+<li>长整型缓冲区</li>
+<li>单精度缓冲区</li>
+<li>双精度缓冲区</li>
+<li>字节映射缓冲区</li>
+</ul>
+<p>正如你看到的，这些缓冲区类型代表着不同的数据类型。<br>字节映射缓冲区有点特殊，我们稍后再单独讲解它。</p>
+<h2 id="分配一个缓冲区"><a href="#分配一个缓冲区" class="headerlink" title="分配一个缓冲区"></a>分配一个缓冲区</h2><p>为了得到一个缓冲区对象，首先你得分配它。每一个缓冲区类型都有一个 <code>allocate()</code> 方法用来非配缓冲区对象。下面是分配一个容量为 48 字节的字节缓冲区的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);</div></pre></td></tr></table></figure></p>
+<p>然后是分配一个容量为 1024 个字符的字符缓冲区的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CharBuffer buf = CharBuffer.allocate(<span class="number">1024</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="向缓冲区写入数据"><a href="#向缓冲区写入数据" class="headerlink" title="向缓冲区写入数据"></a>向缓冲区写入数据</h2><p>你可以通过两种方式向缓冲区写入数据：</p>
+<ol>
+<li>从一个通道中读取数据写入缓冲区</li>
+<li>通过缓冲区的 <code>put()</code> 方法写数据到缓冲区</li>
+</ol>
+<p>下面是从一个通道中读取数据写入缓冲区的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> bytesRead = inChannel.read(buf); <span class="comment">// read into buffer.</span></div></pre></td></tr></table></figure></p>
+<p>然后是使用 <code>put()</code> 方法写数据到缓冲区的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">buf.put(<span class="number">127</span>);</div></pre></td></tr></table></figure></p>
+<p><code>put()</code> 方法有很多种版本，可以让你方便地以不同的方式向缓冲区写入数据。例如，在一个指定的位置写入数据或者将一个字节数组的数据写入缓冲区。想要了解详细信息，请自行查阅 API 文档。</p>
+<h2 id="flip"><a href="#flip" class="headerlink" title="flip()"></a>flip()</h2><p><code>flip()</code> 方法将缓冲区从写模式切换到读模式。调用 <code>flip()</code> 方法将会设置位置为0，限制为位置所在的地方。</p>
+<h2 id="从缓冲区中读取数据"><a href="#从缓冲区中读取数据" class="headerlink" title="从缓冲区中读取数据"></a>从缓冲区中读取数据</h2><p>从缓冲区读取数据的方式有两种：</p>
+<ol>
+<li>将缓冲区数据读到通道</li>
+<li>通过调用 <code>get()</code> 方法读出缓冲区数据</li>
+</ol>
+<p>下面是把缓冲区数据读到通道的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// read from buffer into channel</span></div><div class="line"><span class="keyword">int</span> bytesWritten = inChannel.write(buf);</div></pre></td></tr></table></figure></p>
+<p>下面是调用 <code>get()</code> 方法读出缓冲区数据的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">byte</span> aByte = buf.get();</div></pre></td></tr></table></figure></p>
+<p><code>get()</code> 方法有许多不同的版本，可以让你方便地以不同的方式从缓冲区读出数据。例如，从一个指定的位置读取数据或者从缓冲区读取出一个字节数据的数据。想要了解 <code>get()</code> 方法的具体信息，请自行查阅 API 文档。</p>
+<h2 id="rewind"><a href="#rewind" class="headerlink" title="rewind()"></a>rewind()</h2><p>方法 <code>rewind()</code> 设置位置为 0，这样你就可以开始从头读取缓冲区的数据了。限制含义仍然不变，还是表示你可以从缓冲区读出多少数据。</p>
+<h2 id="clear-和-compact"><a href="#clear-和-compact" class="headerlink" title="clear() 和 compact()"></a>clear() 和 compact()</h2><p>一旦你读完了缓冲区的数据，你需要将缓冲区重置以便下次数据的写入。你可以通过调用 <code>clear()</code> 或 <code>compact()</code> 方法来重置缓冲区。<br>当你调用了 <code>clear()</code> 方法之后，<code>position</code> 将被置为 0，而 <code>limit</code> 将被置为和 <code>capacity</code> 相同。也就是说，缓冲区被清空了。但是缓冲区里原有的数据并没有被清除，这只是可以让你可以从头写入数据而已。<br>当你不再读取缓冲区的数据时，调用了 <code>clear()</code> 之后，缓冲区将“忘记”自己保存的数据。这也就是说你不能再知道哪些数据读取过，哪些数据没有读取过。<br>如果缓冲区中还有尚未读取的数据，而你并不想丢弃这些数据。而此时你又需要写一些数据到缓冲区，那么该怎么办呢？没错，就是调用 <code>compact()</code> 方法。<br><code>compact()</code> 会将尚未读取的数据放在缓冲区的头部。然后把 <code>position</code> 指向未读取数据的后面，<code>limit</code> 属性设置为 <code>capacity</code>。现在你可以向缓冲区写入新的数据了，并且也不会覆盖之前尚未读取的数据。</p>
+<h2 id="mark-和-reset"><a href="#mark-和-reset" class="headerlink" title="mark() 和 reset()"></a>mark() 和 reset()</h2><p>你可以通过调用 <code>Buffer.mark()</code> 来标记当前的 <code>position</code>。然后你可以调用 <code>Buffer.reset()</code> 方法来将 <code>position</code> 重置为之前标记的值。下面是一个小例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">buffer.mark();</div><div class="line"><span class="comment">// call buffer.get() a couple of times, e.g. during parsing.</span></div><div class="line">buffer.reset(); <span class="comment">// set position back to mark.</span></div></pre></td></tr></table></figure></p>
+<h2 id="equals-和-compareTo"><a href="#equals-和-compareTo" class="headerlink" title="equals() 和 compareTo()"></a>equals() 和 compareTo()</h2><p>比较两个缓冲区的话可以调用 <code>equals()</code> 和 <code>compareTo()</code> 方法。</p>
+<h3 id="equals"><a href="#equals" class="headerlink" title="equals()"></a>equals()</h3><p>如果两个缓冲区相等的话：</p>
+<ol>
+<li>两个缓冲区是相同的类型</li>
+<li>两个缓冲区剩余的空间是相等的（这里所谓的剩余空间是指 <code>position</code> 到 <code>limit</code> 之间的空间）</li>
+<li>两个缓冲区剩余的空间的每个单元的值都是相等的</li>
+</ol>
+<p>这个地方有点难于理解，其实看下该方法的源码之后就会瞬间明白了：<code>equals()</code> 方法比较的就是两个缓冲区尚未读取的数据是否相同的，从这一点上来看，已经读取的数据在逻辑上已经不再是缓冲区的数据了。</p>
+<h3 id="compareTo"><a href="#compareTo" class="headerlink" title="compareTo()"></a>compareTo()</h3><p><code>compareTo()</code> 方法比较两个缓冲区剩余的数据（即尚未读取的数据），通常用来排序。我们说一个缓冲区“小于”另外一个缓冲区通常满足如下条件：</p>
+<ol>
+<li>第一个缓冲区中的第一个不等于第二个缓冲区相应位置的单元，前者小于后者</li>
+<li>第一个缓冲区拥有的数据在第二个缓冲区相应位置也有同样的数据，但是第二个缓冲区的长度大于第一个缓冲区的长度</li>
+</ol>
+<p>如上个方法的解释，看这解释还不如直接去看下源码。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2016/11/12/Java-NIO-Buffer/" data-id="cizru1zf4002x68tw7il6umlk" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/13/Java-NIO-Scatter-Gather/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          Java NIO Scatter / Gather
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/12/Java-NIO-Channel/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Java NIO Channel</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.43px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 10px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 15.71px;">AngularJS权威指南</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.43px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.86px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java网络编程/" style="font-size: 11.43px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.57px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.14px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 14.29px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 10px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.43px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.43px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.43px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.43px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.86px;">深入理解Java虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/02/初识-HTTPS/">初识 HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/对称加密和非对称加密/">对称加密和非对称加密</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/28/初识-Sonar/">初识 Sonar</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/26/RFC792-ICMP/">RFC792-ICMP</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/25/Java-NIO-AsynchronousFileChannel/">Java NIO-AsynchronousFileChannel</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
