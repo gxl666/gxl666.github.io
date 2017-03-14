@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>起步(Pro Git) | Javaer</title>
+  <title>Java编程思想-控制执行流程 | Javaer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="《Pro Git》-V2.1.1 中文版阅读笔记，第一章：起步。">
+  <meta name="description" content="《Java 编程思想》第四章-控制执行流程，阅读笔记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="起步(Pro Git)">
-<meta property="og:url" content="http://gxl666.github.io/2016/12/14/起步-Pro-Git/index.html">
+<meta property="og:title" content="Java编程思想-控制执行流程">
+<meta property="og:url" content="http://gxl666.github.io/2017/03/14/Java编程思想-控制执行流程/index.html">
 <meta property="og:site_name" content="Javaer">
-<meta property="og:description" content="《Pro Git》-V2.1.1 中文版阅读笔记，第一章：起步。">
-<meta property="og:updated_time" content="2016-12-14T12:33:01.353Z">
+<meta property="og:description" content="《Java 编程思想》第四章-控制执行流程，阅读笔记。">
+<meta property="og:updated_time" content="2017-03-14T09:53:15.020Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="起步(Pro Git)">
-<meta name="twitter:description" content="《Pro Git》-V2.1.1 中文版阅读笔记，第一章：起步。">
+<meta name="twitter:title" content="Java编程思想-控制执行流程">
+<meta name="twitter:description" content="《Java 编程思想》第四章-控制执行流程，阅读笔记。">
   
     <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
   
@@ -67,14 +67,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-起步-Pro-Git" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Java编程思想-控制执行流程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/12/14/起步-Pro-Git/" class="article-date">
-  <time datetime="2016-12-14T12:15:25.000Z" itemprop="datePublished">2016-12-14</time>
+    <a href="/2017/03/14/Java编程思想-控制执行流程/" class="article-date">
+  <time datetime="2017-03-14T09:17:25.000Z" itemprop="datePublished">2017-03-14</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Git/">Git</a>
+    <a class="article-category-link" href="/categories/Java编程思想/">Java编程思想</a>
   </div>
 
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      起步(Pro Git)
+      Java编程思想-控制执行流程
     </h1>
   
 
@@ -93,31 +93,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>《Pro Git》-V2.1.1 中文版阅读笔记，第一章：起步。<br><a id="more"></a></p>
-<h2 id="三种状态，三个区域"><a href="#三种状态，三个区域" class="headerlink" title="三种状态，三个区域"></a>三种状态，三个区域</h2><ol>
-<li>已修改（modified）——工作区（Working Directory）</li>
-<li>已暂存（staged）——暂存区域（对已修改文件做了标记，使之包含在下次提交的快照中）（Staging Area）</li>
-<li>已提交（committed）——Git仓库（.git directory Repository）</li>
+        <p>《Java 编程思想》第四章-控制执行流程，阅读笔记。<br><a id="more"></a></p>
+<h2 id="逗号操作符"><a href="#逗号操作符" class="headerlink" title="逗号操作符"></a>逗号操作符</h2><p>第一次在 Java 中听说这个概念，是逗号操作符，不是逗号分隔符（就是用在分隔函数的不同参数啦）。<br>Java 里唯一使用逗号操作符的地方就是 for 循环中的初始化部分（通过使用逗号操作符可以直接定义多个相同类型的变量，不能定义多个类型不同的变量）和步进控制部分。</p>
+<h2 id="臭名昭著的goto"><a href="#臭名昭著的goto" class="headerlink" title="臭名昭著的goto"></a>臭名昭著的goto</h2><p>要记住重点：在 Java 里需要使用标签的唯一理由就是因为有循环嵌套存在，而且想从多层嵌套中 break 或 continue。<br>没想到 Java 中还有这种古老的大杀器，不过应该很好有人用了吧？不用的理由应该有二：</p>
+<ol>
+<li>出于对印象中 goto 的畏惧</li>
+<li>并不知道 Java 中还留着这语法</li>
 </ol>
-<h2 id="三种级别的配置，三个位置的配置文件"><a href="#三种级别的配置，三个位置的配置文件" class="headerlink" title="三种级别的配置，三个位置的配置文件"></a>三种级别的配置，三个位置的配置文件</h2><ol>
-<li>git config –system，配置文件位置：/etc/gitconfig（win下会略有不同）,整个系统有效</li>
-<li>git config –global，配置文件位置：~/.gitconfig 或 ~/.config/git/config，本用户有效</li>
-<li>本仓库有效，配置文件位置：.git/config</li>
-</ol>
-<p>三种级别的配置，下面的会覆盖上面的。但是使用 <code>git config --list</code> 时，每级配置文件里面的配置都会罗列出来，不管它们是否是重复配置项（感觉这个有点不合理）</p>
-<h2 id="三种获取帮助的方式"><a href="#三种获取帮助的方式" class="headerlink" title="三种获取帮助的方式"></a>三种获取帮助的方式</h2><ol>
-<li>git help <verb>(eg. git help config)</verb></li>
-<li>git <verb> help(eg. git config –help)</verb></li>
-<li>man git-<verb>(目测man命令是 Linux 下的)</verb></li>
-</ol>
+<p>下面示例程序纪念一波：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> control;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by clearbug on 2017/3/14.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LabeledFor</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">        outer: <span class="comment">// Can't have statements here</span></div><div class="line">        <span class="keyword">for</span> (; <span class="keyword">true</span> ;) &#123; <span class="comment">// infinite loop</span></div><div class="line">            inner: <span class="comment">// Can't have statements here</span></div><div class="line">            <span class="keyword">for</span> (; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">                System.out.println(<span class="string">"i = "</span> + i);</div><div class="line">                <span class="keyword">if</span> (i == <span class="number">2</span>) &#123;</div><div class="line">                    System.out.println(<span class="string">"continue"</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (i == <span class="number">3</span>) &#123;</div><div class="line">                    System.out.println(<span class="string">"break"</span>);</div><div class="line">                    i++; <span class="comment">// Otherwise i never gets incremented.</span></div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (i == <span class="number">7</span>) &#123;</div><div class="line">                    System.out.println(<span class="string">"continue outer"</span>);</div><div class="line">                    i++; <span class="comment">// Otherwise i never gets incremented.</span></div><div class="line">                    <span class="keyword">continue</span> outer;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (i == <span class="number">8</span>) &#123;</div><div class="line">                    System.out.println(<span class="string">"break outer"</span>);</div><div class="line">                    <span class="keyword">break</span> outer;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">5</span>; j++) &#123;</div><div class="line">                    <span class="keyword">if</span> (j == <span class="number">3</span>) &#123;</div><div class="line">                        System.out.println(<span class="string">"continue inner"</span>);</div><div class="line">                        <span class="keyword">continue</span> inner;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// Can't break or continue to lables here</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://gxl666.github.io/2016/12/14/起步-Pro-Git/" data-id="cj09btqh200g5vktw6b5mqjhy" class="article-share-link">Share</a>
+      <a data-url="http://gxl666.github.io/2017/03/14/Java编程思想-控制执行流程/" data-id="cj09btq530054vktwjhfjxgqj" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java编程思想/">Java编程思想</a></li></ul>
 
     </footer>
   </div>
@@ -125,19 +116,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/12/23/OkHttp-学习第一波/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          OkHttp 学习第一波
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/11/23/The-Multipart-Content-Type/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/03/13/Java编程思想-操作符/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">The Multipart Content-Type</div>
+      <div class="article-nav-title">Java编程思想-操作符</div>
     </a>
   
 </nav>
