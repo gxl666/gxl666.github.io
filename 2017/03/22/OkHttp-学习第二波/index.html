@@ -3,21 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>数据库学习（一） | Javaer</title>
+  <title>OkHttp 学习第二波 | Javaer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这周开始了SQL的学习。">
+  <meta name="description" content="之前说好好学习下 OkHttp 的，起码对其实现源码有一定了解。但是面对现实，不得不拥抱变化，现在又没时间看这个了，以后有时间再好好研究下吧！">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库学习（一）">
-<meta property="og:url" content="http://gxl666.github.io/2016/08/14/数据库学习（一）/index.html">
+<meta property="og:title" content="OkHttp 学习第二波">
+<meta property="og:url" content="http://gxl666.github.io/2017/03/22/OkHttp-学习第二波/index.html">
 <meta property="og:site_name" content="Javaer">
-<meta property="og:description" content="这周开始了SQL的学习。">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/e126ba24gw1f6tfjnumn0j20ij04u0tf.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/e126ba24gw1f6tfojf70dj20i607bgmb.jpg">
-<meta property="og:updated_time" content="2016-08-17T03:54:36.000Z">
+<meta property="og:description" content="之前说好好学习下 OkHttp 的，起码对其实现源码有一定了解。但是面对现实，不得不拥抱变化，现在又没时间看这个了，以后有时间再好好研究下吧！">
+<meta property="og:updated_time" content="2017-03-22T01:32:25.256Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库学习（一）">
-<meta name="twitter:description" content="这周开始了SQL的学习。">
-<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/e126ba24gw1f6tfjnumn0j20ij04u0tf.jpg">
+<meta name="twitter:title" content="OkHttp 学习第二波">
+<meta name="twitter:description" content="之前说好好学习下 OkHttp 的，起码对其实现源码有一定了解。但是面对现实，不得不拥抱变化，现在又没时间看这个了，以后有时间再好好研究下吧！">
   
     <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
   
@@ -70,14 +67,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-数据库学习（一）" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-OkHttp-学习第二波" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/14/数据库学习（一）/" class="article-date">
-  <time datetime="2016-08-14T09:53:24.000Z" itemprop="datePublished">2016-08-14</time>
+    <a href="/2017/03/22/OkHttp-学习第二波/" class="article-date">
+  <time datetime="2017-03-22T01:29:39.000Z" itemprop="datePublished">2017-03-22</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+    <a class="article-category-link" href="/categories/OkHttp/">OkHttp</a>
   </div>
 
   </div>
@@ -88,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      数据库学习（一）
+      OkHttp 学习第二波
     </h1>
   
 
@@ -96,20 +93,29 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这周开始了SQL的学习。<br><a id="more"></a></p>
-<h2 id="学习使用环境"><a href="#学习使用环境" class="headerlink" title="学习使用环境"></a>学习使用环境</h2><p><img src="http://ww2.sinaimg.cn/large/e126ba24gw1f6tfjnumn0j20ij04u0tf.jpg" alt="MySQL环境"></p>
-<h2 id="学习参考文献"><a href="#学习参考文献" class="headerlink" title="学习参考文献"></a>学习参考文献</h2><p><a href="http://www.w3school.com.cn/sql/index.asp" target="_blank" rel="external">W3School SQL 教程</a></p>
-<h2 id="新的认识"><a href="#新的认识" class="headerlink" title="新的认识"></a>新的认识</h2><ol>
-<li>SQL对大小不敏感！！！<br><img src="http://ww2.sinaimg.cn/large/e126ba24gw1f6tfojf70dj20i607bgmb.jpg" alt="有图为证"><br>由图可知：不止关键字大小写不敏感，连数据内容（cLaSs_A）也是大小写不敏感！<br>MySQL中的表名要小写，即使定义时使用大写字母也会保存为小写！<br>MySQL中的字段名可以大写！</li>
+        <p>之前说好好学习下 OkHttp 的，起码对其实现源码有一定了解。但是面对现实，不得不拥抱变化，现在又没时间看这个了，以后有时间再好好研究下吧！<br><a id="more"></a></p>
+<h2 id="单词"><a href="#单词" class="headerlink" title="单词"></a>单词</h2><ol>
+<li>latency 延迟</li>
+<li>conversely 相反的</li>
+<li>idle 闲置的</li>
+<li>derived 派生的，衍生的</li>
+<li>aggressively 侵略地</li>
+<li>tradeoffs 折衷的，权衡的</li>
+<li>negotiating 谈判，协商</li>
+<li>presented 提出</li>
+<li>protential 潜在的</li>
+<li>rescinede 取消</li>
+<li>bookkeeping 记账，统计</li>
+<li>one-shot 只有一次的</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://gxl666.github.io/2016/08/14/数据库学习（一）/" data-id="cj0kanwht00d1qgtwdra5ndm5" class="article-share-link">Delen</a>
+      <a data-url="http://gxl666.github.io/2017/03/22/OkHttp-学习第二波/" data-id="cj0kanwe4009aqgtwbnrg7v9x" class="article-share-link">Delen</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OkHttp/">OkHttp</a></li></ul>
 
     </footer>
   </div>
@@ -117,19 +123,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/08/14/数据库学习（二）—查询/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Nieuwer</strong>
-      <div class="article-nav-title">
-        
-          数据库学习（二）—查询 
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/08/12/对象生死录/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/03/21/初识-Concourse-CI/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Ouder</strong>
-      <div class="article-nav-title">对象生死录</div>
+      <div class="article-nav-title">初识 Concourse CI</div>
     </a>
   
 </nav>
