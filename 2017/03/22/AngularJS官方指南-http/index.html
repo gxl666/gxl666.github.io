@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AngularJS官方指南-http | Javaer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="看官方指南 http 服务页面的一点点笔记。（一个多月之前学习时留下的笔记，现在也没时间继续学习了，就把笔记贴着吧）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS官方指南-http">
+<meta property="og:url" content="http://gxl666.github.io/2017/03/22/AngularJS官方指南-http/index.html">
+<meta property="og:site_name" content="Javaer">
+<meta property="og:description" content="看官方指南 http 服务页面的一点点笔记。（一个多月之前学习时留下的笔记，现在也没时间继续学习了，就把笔记贴着吧）">
+<meta property="og:updated_time" content="2017-03-22T01:39:05.859Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS官方指南-http">
+<meta name="twitter:description" content="看官方指南 http 服务页面的一点点笔记。（一个多月之前学习时留下的笔记，现在也没时间继续学习了，就把笔记贴着吧）">
+  
+    <link rel="alternate" href="/atom.xml" title="Javaer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Javaer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://gxl666.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AngularJS官方指南-http" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/22/AngularJS官方指南-http/" class="article-date">
+  <time datetime="2017-03-22T01:36:58.000Z" itemprop="datePublished">2017-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AngularJS官方指南-http
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>看官方指南 http 服务页面的一点点笔记。（一个多月之前学习时留下的笔记，现在也没时间继续学习了，就把笔记贴着吧）<br><a id="more"></a></p>
+<h2 id="安全考虑"><a href="#安全考虑" class="headerlink" title="安全考虑"></a>安全考虑</h2><p>当设计一个网络应用时，需要考虑两种安全威胁：</p>
+<ul>
+<li><a href="http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx" target="_blank" rel="external">JSON vulnerability</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank" rel="external">XSRF</a></li>
+</ul>
+<p>为了消除这种安全性威胁，客户端和服务器端需要相互协作。Angular 自带有安全策略配置来解决这些问题，但是需要后端服务器的支持。</p>
+<h3 id="JSON-Vulnerability-脆弱性，弱点-Protection"><a href="#JSON-Vulnerability-脆弱性，弱点-Protection" class="headerlink" title="JSON Vulnerability(脆弱性，弱点) Protection"></a>JSON Vulnerability(脆弱性，弱点) Protection</h3><p>一个 <a href="http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx" target="_blank" rel="external">JSON vulnerability</a> 允许第三方网站在某些条件下将你的 JSON 格式的资源 URL 转换为 <a href="http://en.wikipedia.org/wiki/JSONP" target="_blank" rel="external">JSONP</a>请求。为了解决这个问题，你的服务器可以在响应 JSON 请求时在响应体上加入前缀字符串 <code>&quot;)]}&#39;,\n&quot;</code>。Angular 在处理 JSON 响应前会自动除去这个前缀。<br>例如，如果你的服务器需要返回如下内容：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">['one','two']</div></pre></td></tr></table></figure></p>
+<p>这是脆弱的，且容易被攻击，你的服务器可以返回如下内容：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">)]&#125;',</div><div class="line">['one','two']</div></pre></td></tr></table></figure></p>
+<p>Angular 在处理 JSON 响应数据之前将会自动除去前缀。</p>
+<h3 id="Cross-Site-Request-Forgery-XSRF-Protection"><a href="#Cross-Site-Request-Forgery-XSRF-Protection" class="headerlink" title="Cross Site Request Forgery(XSRF) Protection"></a>Cross Site Request Forgery(XSRF) Protection</h3><p><a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank" rel="external">XSRF</a> 是一种攻击者伪装成已认证用户在你的网站上执行一些授权操作的攻击技术。Angular 提供了一种机制来阻止 XSRF。当发起 XHR 请求时，$http 会从 cookie 中读取一个 token（默认是 XSRF-TOKEN）并把它设置为一个 HTTP 请求头部字段（X-XSRF-TOKEN）。因为只有运行在你域名下的 JavaScript 脚本才可以读取你域名下的 cookie，<br>因此你的服务器端可以通过这个字段来确保请求来自你域名下的 JavaScript 脚本。跨域名的请求将无法设置这个请求头。<br>利用这一点，你的服务器端需要在接收到客户端第一次发送的 HTTP GET 请求后设置一个只有 JavaScript 脚本可读的 XSRF-TOKEN cookie。在接下来的 XHR 请求中，服务器可以验证 cookie 中的 XSRF-TOKEN 字段的值是否匹配 HTTP 头部字段 X-XSRF-TOKEN 的值，并依次确保只有运行在你域名下的 JavaScript 脚本可以发送请求。这个 token 的值必须针对每一个用户拥有唯一性，并且服务器端可以校验这个值（为了防止攻击者自行伪造自己的 token）。我们推荐做法是将你站点的认证 cookie 加<a href="https://en.wikipedia.org/wiki/Salt_(cryptography" target="_blank" rel="external">盐</a>) 后取摘要来增加安全性。<br>这个头部字段名可以在配置阶段或者运行阶段使用 $httpProvider.defaults 的 xsrfHeaderName 和 xsrfCookieName 属性自行指定，也可以在请求的 config 对象中指定。<br>为了防止共享域名或子域名的多个 Angular 应用产生冲突，我们建议每个应用使用单独的 cookie 名。</p>
+<h2 id="单词"><a href="#单词" class="headerlink" title="单词"></a>单词</h2><p>Forgery，伪造</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://gxl666.github.io/2017/03/22/AngularJS官方指南-http/" data-id="cj0kav6qx00071stwq8vbd2p1" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/22/OkHttp-学习第二波/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">OkHttp 学习第二波</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Angular/">Angular</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS官方指南/">AngularJS官方指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/AngularJS权威指南/">AngularJS权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Concourse/">Concourse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Dos/">Dos</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTPS/">HTTPS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP权威指南/">HTTP权威指南</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java编程思想/">Java编程思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java网络编程/">Java网络编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OkHttp/">OkHttp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/RFC/">RFC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSH/">SSH</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Sonar/">Sonar</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Win7/">Win7</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/book/">book</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boutique/">boutique</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/manpage/">manpage</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/加密/">加密</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/日志/">日志</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/深入理解Java虚拟机/">深入理解Java虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/鸟哥的Linux私房菜/">鸟哥的Linux私房菜</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS官方指南/">AngularJS官方指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJS权威指南/">AngularJS权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Concourse/">Concourse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dos/">Dos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/English/">English</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP权威指南/">HTTP权威指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java编程思想/">Java编程思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java网络编程/">Java网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OkHttp/">OkHttp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFC/">RFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sonar/">Sonar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Win7/">Win7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/boutique/">boutique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manpage/">manpage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/年终总结/">年终总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志/">日志</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深入理解Java虚拟机/">深入理解Java虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鸟哥的Linux私房菜/">鸟哥的Linux私房菜</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 11.25px;">Angular</a> <a href="/tags/AngularJS官方指南/" style="font-size: 11.25px;">AngularJS官方指南</a> <a href="/tags/AngularJS权威指南/" style="font-size: 16.25px;">AngularJS权威指南</a> <a href="/tags/Concourse/" style="font-size: 10px;">Concourse</a> <a href="/tags/Dos/" style="font-size: 10px;">Dos</a> <a href="/tags/English/" style="font-size: 11.25px;">English</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/HTTPS/" style="font-size: 10px;">HTTPS</a> <a href="/tags/HTTP权威指南/" style="font-size: 12.5px;">HTTP权威指南</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java编程思想/" style="font-size: 15px;">Java编程思想</a> <a href="/tags/Java网络编程/" style="font-size: 11.25px;">Java网络编程</a> <a href="/tags/Linux/" style="font-size: 18.75px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 17.5px;">MySQL</a> <a href="/tags/Netty/" style="font-size: 13.75px;">Netty</a> <a href="/tags/OkHttp/" style="font-size: 11.25px;">OkHttp</a> <a href="/tags/RFC/" style="font-size: 11.25px;">RFC</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Sonar/" style="font-size: 10px;">Sonar</a> <a href="/tags/Spring/" style="font-size: 11.25px;">Spring</a> <a href="/tags/Win7/" style="font-size: 10px;">Win7</a> <a href="/tags/book/" style="font-size: 11.25px;">book</a> <a href="/tags/boutique/" style="font-size: 10px;">boutique</a> <a href="/tags/manpage/" style="font-size: 10px;">manpage</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/年终总结/" style="font-size: 10px;">年终总结</a> <a href="/tags/日志/" style="font-size: 11.25px;">日志</a> <a href="/tags/深入理解Java虚拟机/" style="font-size: 12.5px;">深入理解Java虚拟机</a> <a href="/tags/鸟哥的Linux私房菜/" style="font-size: 10px;">鸟哥的Linux私房菜</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/22/AngularJS官方指南-http/">AngularJS官方指南-http</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/22/OkHttp-学习第二波/">OkHttp 学习第二波</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/21/初识-Concourse-CI/">初识 Concourse CI</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/17/Java编程思想-Java-I-O系统/">Java编程思想-Java I/O系统</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/16/Java编程思想-初始化和清理/">Java编程思想-初始化和清理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 gxl666<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
